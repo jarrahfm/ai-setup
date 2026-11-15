@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Open an AI chat, step by step</title>
+<link rel="icon" href="data:,">
+<!--
+  A step-by-step guide to opening an AI chat, made for a phone: scan the code on the projected slide, then follow
+  each step here while you work on your laptop. One page, no libraries, no cookies, no tracking; the only thing kept
+  is the address after "#" (the chosen chat and the step), so a refresh or a shared link opens the same step.
+
+  THE ROUTE DATA LIVES IN TWO PLACES. SETUP_ROUTES, TEST_PROMPT and the route words (TEXT) below are copied
+  unchanged from the talk: applied-ai-science-learning/presentation-short/index.html in the workshop project.
+  Change a step in both files, then publish this one again (commit and push; the page updates in a minute or two).
+-->
+<style>
+:root{--ink:#111820;--muted:#45505c;--line:#c9d3dc;--brand:#0b3d5c;--accent:#f2a516;--bg:#ffffff;--soft:#f1f5f8;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;--mono:ui-monospace,Consolas,Menlo,monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:20px/1.45 var(--font)}
+main{max-width:760px;margin:0 auto;padding:16px 18px 120px}
+main:focus{outline:none}
+h1{font-size:1.5em;line-height:1.2;margin:.3em 0 .6em}
+h2{font-size:1.25em;line-height:1.25;margin:0 0 .4em}
+p{margin:.5em 0}
+a{color:var(--brand)}
+button,.btn{font:inherit;font-weight:700;cursor:pointer;border-radius:14px;min-height:56px;padding:.55em 1em;line-height:1.2;
+  border:3px solid var(--brand);background:var(--brand);color:#fff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:.4em}
+button.ghost,.btn.ghost{background:#fff;color:var(--brand)}
+:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+.choices{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.choice{display:block;width:100%;text-align:left;padding:16px 18px;border-radius:16px;border:3px solid var(--brand);background:#fff;color:var(--ink);text-decoration:none}
+.choice b{display:block;font-size:1.25em;color:var(--brand)}
+.choice span{display:block;font-weight:400;color:var(--muted);margin-top:.2em}
+.choice:hover,.choice:focus-visible{background:var(--soft)}
+.choices.minor .choice{border-width:2px;border-color:var(--line);padding:12px 16px}
+.choices.minor .choice b{font-size:1.05em;color:var(--ink)}
+.minor-gap{margin-top:22px}
+.skip{margin-top:26px;font-size:.95em}
+.where{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-weight:700;color:var(--muted);font-size:.9em}
+.bar{height:10px;border-radius:10px;background:var(--soft);border:1px solid var(--line);overflow:hidden;margin:8px 0 18px}
+.bar i{display:block;height:100%;background:var(--brand)}
+.do{font-size:1.3em;font-weight:700;line-height:1.3;margin:.2em 0 .6em}
+.addr{margin:.8em 0;padding:14px 16px;border:3px solid var(--line);border-radius:16px;background:var(--soft)}
+.addr p{margin:0 0 .3em;font-weight:700}
+.addr code{display:block;font-family:var(--mono);font-size:1.45em;font-weight:700;overflow-wrap:anywhere;line-height:1.25;margin-bottom:.5em}
+.tip{display:flex;gap:.5em;align-items:flex-start}
+.see b{margin-right:.3em}
+.tip{color:var(--muted)}
+.tip::before{content:"→";font-weight:700;color:var(--brand)}
+figure{margin:16px 0}
+figure img{display:block;max-width:100%;height:auto;border:2px solid var(--line);border-radius:10px}
+.bubble{margin:.4em 0 .6em;padding:14px 16px;border:3px solid var(--brand);border-radius:6px 22px 22px 22px;background:#fff;font-size:1.15em;line-height:1.35;overflow-wrap:anywhere}
+details{margin:20px 0 0;border:3px solid var(--line);border-radius:16px;padding:0 16px}
+summary{cursor:pointer;font-weight:700;min-height:56px;display:flex;align-items:center;color:var(--brand)}
+details ul{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:12px}
+details li b{display:block}
+.os{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.os button{min-height:72px;font-size:1.15em}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+nav div{max-width:760px;margin:0 auto;display:flex;gap:12px}
+nav button{flex:1}
+nav button.ghost{flex:0 1 40%}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main id="main" tabindex="-1"></main>
+<nav id="nav" hidden><div><button type="button" class="ghost" id="back"></button><button type="button" id="next"></button></div></nav>
+<script>
+"use strict";
+/* ===== Route data: copied unchanged from the talk (presentation-short/index.html). Change it in both places. ===== */
+const SETUP_ROUTES = [
+  // GEMINI. From Google's help pages only (support.google.com/gemini, read 15 Nov 2026). Not tried on a real account.
+  // url: the address Google's own help page gives ("Go to gemini.google.com."). Not machine-checked: the research
+  // fetch of gemini.google.com failed twice. Scan it before the day.
+  { id: "gemini", name: "Gemini", by: "Google",
+    address: "gemini.google.com", url: "https://gemini.google.com",
+    need: "A personal Google Account. Age 13+.",
+    steps: [
+      { do: "Go to gemini.google.com." },
+      { do: "At the top right, select “Sign in”. Sign in with your personal Google Account.",
+        tip: "Canvas shows your page. It works only when you are signed in." },
+      { do: "Click “Settings & help”, then “Activity”. Near the top, click “On”, then “Turn off”.",
+        tip: "Future chats are not used for training unless you send feedback." },
+      { do: "At the top left, click “New chat”.", tip: "No “New chat”? Click “Menu” first." },
+      { do: "Below the text box, click “Add Files”, then “Canvas”." }
+    ],
+    stuck: [
+      { problem: "It says “Something went wrong”.", fix: "Your account cannot use Gemini now. Try again later." },
+      { problem: "It says “Can’t access this service”.", fix: "Use a personal Google Account. A work or school account needs its administrator." },
+      { problem: "Limit reached.", fix: "Wait until it refreshes. Gemini tells you when." }
+    ],
+    source: "gemini2026" },
+
+  // CLAUDE. From Anthropic's help and privacy pages only (read 15 Nov 2026). claude.ai refused the research fetch
+  // (HTTP 403), so no screen was seen. The label of the new-chat control is not documented, so step 5 names none.
+  { id: "claude", name: "Claude", by: "Anthropic",
+    address: "claude.ai", url: "https://claude.ai/",
+    need: "A Claude account and a mobile phone that gets texts. Age 18+.",
+    steps: [
+      { do: "Go to claude.ai." },
+      { do: "Click “Continue with Google”, or type your email and click “Continue with email”.",
+        tip: "No email? Check your spam folder." },
+      { do: "First time only: type your mobile number, then the six-digit code, then “Verify code”.",
+        tip: "Landlines, VoIP numbers, and phone numbers made with apps are not accepted." },
+      { do: "Click your name, then “Settings”, then “Privacy”. Turn off “Help Improve our AI models”.",
+        tip: "New chats are not used for training unless they are flagged for safety." },
+      { do: "Start a new chat.", tip: "Do not use an incognito chat (ghost icon). It may not create files." }
+    ],
+    stuck: [
+      { problem: "No code arrived.", fix: "After five minutes, click “Try again” and check the number." },
+      { problem: "Limit reached.", fix: "Wait until the reset time shown in the message." },
+      { problem: "No preview?", fix: "Turn on “Create and edit files” in “Settings” > “Capabilities”, or use “Save the page as a file”." }
+    ],
+    source: "claude2026" },
+
+  // CHATGPT. From OpenAI's help pages and the chatgpt.com start page (read 15 Nov 2026). Not tried on a real
+  // account. Whether Preview works on the free plan is NOT documented.
+  { id: "chatgpt", name: "ChatGPT", by: "OpenAI",
+    address: "chatgpt.com", url: "https://chatgpt.com",
+    need: "A free ChatGPT account.",
+    steps: [
+      { do: "Go to chatgpt.com and select “Sign up for free”.",
+        see: "A box called “Log in or sign up”.", tip: "Already have an account? Select “Log in”." },
+      { do: "Choose how to sign up: Google, Microsoft, Apple, phone, or email." },
+      { do: "Open your account menu, then “Settings”, then “Data controls”." },
+      { do: "Select “Improve the model for everyone”, turn it off, and select “Done”.",
+        tip: "A thumbs up or down on an answer may still send that chat for training." },
+      { do: "Select “New chat”." }
+    ],
+    stuck: [
+      { problem: "No code arrived.", fix: "Request a new code, use the newest one, and check your spam folder." },
+      { problem: "Limit reached.", fix: "Wait until the reset time ChatGPT shows." },
+      { problem: "No preview?", fix: "Select “Preview” on the code. If it is not there, use “Save the page as a file”." }
+    ],
+    source: "chatgpt2026" },
+
+  // MICROSOFT COPILOT. From Microsoft's support pages and the copilot.com start page (read 15 Nov 2026). Not tried
+  // on a real account. The documented page preview needs a paid plan. No training-setting step: not documented
+  // for the updated app. Kuwait is not named in any page read.
+  { id: "copilot", name: "Microsoft Copilot", by: "Microsoft",
+    address: "copilot.com", url: "https://copilot.com/",
+    need: "A personal Microsoft, Apple, or Google account. Age 13+ (higher in some countries).",
+    steps: [
+      { do: "Go to copilot.com.", see: "“Sign into Copilot”, with a “Sign in” button." },
+      { do: "Select “Sign in”. Use a personal Microsoft Account, Apple ID, or Google Account." },
+      { do: "Start a new chat.", tip: "On Home, type in the message box and choose “Chat”." }
+    ],
+    stuck: [
+      { problem: "No preview?", fix: "The documented preview needs a paid plan. Use “Save the page as a file”." },
+      { problem: "Limit reached.", fix: "Come back later." },
+      { problem: "My screen looks different.", fix: "Copilot’s new Home is still rolling out, so screens can differ." }
+    ],
+    source: "copilot2026" },
+
+  // ANTIGRAVITY. From the Antigravity documentation (antigravity.google/docs/getting-started and /docs/settings),
+  // read 11 November 2026. Not yet rehearsed on a clean laptop: do that before the day and correct any button name.
+  { id: "antigravity", name: "Antigravity app (Google)", by: "Google",
+    address: "antigravity.google/download", url: "https://antigravity.google/download",
+    need: "A personal Google account. Age 18+.",
+    steps: [
+      { do: "Download Antigravity. Install it like any app.", command: { windows: "antigravity.google/download", macos: "antigravity.google/download" } },
+      { do: "Sign in with a personal Google account. Choose “Science”." },
+      { do: "Open “Settings”, then “Account”. Turn off “Enable Telemetry”." },
+      { do: "Select “New Project”, then “Add Folder”. Choose an empty folder and select “Create”." }
+    ],
+    stuck: [],
+    source: "antigravity2026" },
+
+  // SAVE THE PAGE AS A FILE. Product-independent. From Microsoft's and Apple's support pages (read 15 Nov 2026).
+  // Not tried on a real laptop; see routes-notes.md for the labels that are not documented. No address, no QR code,
+  // and no test request at the end (test: false): the page is already made when people use this guide.
+  { id: "save", name: "Save the page as a file", by: "",
+    address: "", url: "", test: false,
+    need: "The page’s code from your AI chat, and Notepad (Windows) or TextEdit (Mac).",
+    steps: [
+      { do: { windows: "Select the Start button, type “Notepad”, then select “Notepad”.",
+              macos: "Open TextEdit and start a new document." } },
+      { do: { windows: "Copy all of the page’s code from your AI chat. Paste it into Notepad.",
+              macos: "Copy all of the page’s code from your AI chat. Paste it into TextEdit." } },
+      { do: { windows: "On the “File” menu, select “Save as”.",
+              macos: "Use the “Format” menu to change the document to plain text." } },
+      { do: { windows: "In the “File name” box, type hello.html.",
+              macos: "Choose “TextEdit” > “Settings” > “Open and Save”. Deselect “Add \".txt\" extension to plain text files”." } },
+      { do: { windows: "Change “Save as type” to “All files (*.*)”, then save on the Desktop.",
+              macos: "Save the document as hello.html on the Desktop." } },
+      { do: { windows: "Double-click hello.html.",
+              macos: "Double-click hello.html." } }
+    ],
+    stuck: [
+      { problem: "I can’t see .html on the file name.", fix: "Windows: In File Explorer, select “View” > “Show” > “File name extensions”." },
+      { problem: "It opens in the wrong app.", fix: "Windows: In “Settings”, select “Apps” > “Default apps” and search for .html." },
+      { problem: "TextEdit shows the page, not the code.", fix: "Mac: In “TextEdit” > “Settings” > “Open and Save”, select “Display HTML files as HTML code instead of formatted text”." }
+    ],
+    source: "savefile2026" }
+];
+const TEST_PROMPT = "Create hello.html that shows today’s date in big letters, then tell me how to open it.";
+// the talk's route words used here
+const TEXT = {
+  see: "You should see:",   // route.see
+  stuck: "Stuck?",   // route.stuck
+  copy: "Copy",   // route.copy
+  copied: "Copied",   // route.copied
+  windows: "Windows",   // route.windows
+  macos: "macOS",   // route.macos
+  finalDo: "Type:",   // route.final.do
+  finalSee: "The page’s code and, where the AI chat offers it, a preview."    // route.final.see
+};
+
+/* ===== Words this guide adds (labels a control needs) ===== */
+const UI = {
+  title: "Open an AI chat, step by step",
+  choose: "Which AI chat do you want to use?",
+  skip: "Go straight to “Save the page as a file”",
+  step: "Step {k} of {n}",
+  next: "Next", back: "Back", again: "Start again",
+  open: "Open {name}",
+  typeAddr: "Type this address on your laptop:",
+  whichOS: "Which computer are you using?"
+};
+
+/* ===== Pictures of the real public screens, taken signed out at a 1280 x 800 window on 15 November 2026 =====
+   gemini-*      https://gemini.google.com (it opened https://gemini.google.com/app); gemini-google-sign-in is the page
+                 its "Sign in" button opened (accounts.google.com). Signed out, the left menu shows "Settings", not
+                 "Settings & help"; the signed-in menu was not seen, so step 3 is unchanged.
+   claude-*      https://claude.ai/ (it opened https://claude.ai/login). The screen also offers "Continue with Apple".
+   chatgpt-*     https://chatgpt.com/ and the box its "Sign up for free" button opened. The box offered Google, Apple,
+                 phone and email; it showed no Microsoft option (step 2 names Microsoft, from OpenAI's help pages).
+   copilot-*     https://copilot.com/ and the page its "Sign in" button opened (login.microsoftonline.com), which
+                 offered a Microsoft account, "Continue with Google" and "Continue with Apple".
+   antigravity-* https://antigravity.google/download (the page picks the tab for the visitor's system; here Windows).
+   Rings mark the button the step names. Keys are step numbers (1 = first step). */
+const PICTURES = {
+  gemini: { 1: [["gemini-start.webp", "The Gemini start page", 960, 600]],
+            2: [["gemini-sign-in.webp", "“Sign in”, at the top right", 580, 330], ["gemini-google-sign-in.webp", "The Google sign-in page", 900, 440]],
+            4: [["gemini-new-chat.webp", "“New chat”, at the top left", 560, 300]] },
+  claude: { 1: [["claude-start.webp", "The Claude start page", 960, 600]],
+            2: [["claude-continue.webp", "“Continue with Google” and “Continue with email”", 620, 380]] },
+  chatgpt: { 1: [["chatgpt-sign-up.webp", "“Sign up for free”, at the top right", 520, 220]],
+             2: [["chatgpt-box.webp", "The “Log in or sign up” box", 500, 540]] },
+  copilot: { 1: [["copilot-start.webp", "The Copilot start page", 960, 600]],
+             2: [["copilot-sign-in.webp", "The “Sign in” button", 620, 300], ["copilot-accounts.webp", "The Microsoft sign-in page", 480, 580]] },
+  antigravity: { 1: [["antigravity-download.webp", "The download buttons for the Antigravity app", 700, 330]] }
+};
+
+/* ===== The guide ===== */
+const $ = s => document.querySelector(s);
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const k in attrs || {}) { const v = attrs[k]; if (v == null || v === false) continue; if (k === "class") e.className = v; else e.setAttribute(k, v === true ? "" : v); }
+  for (const k of kids.flat()) if (k != null) e.append(k instanceof Node ? k : document.createTextNode(String(k)));
+  return e;
+}
+const fill = (t, v) => t.replace(/\{(\w+)\}/g, (_, k) => v[k] != null ? v[k] : "");
+const str = v => v == null ? "" : String(v);
+const pick = (v, os) => v && typeof v === "object" ? str(v[os] != null ? v[os] : (v.windows != null ? v.windows : v.macos)) : str(v);
+const SAVE = SETUP_ROUTES.find(r => r.id === "save");
+const CHATS = SETUP_ROUTES.filter(r => r.id !== "save");
+const OS = ["windows", "macos"];
+
+// every screen of one route: its steps, the first request, the question about the computer, the save steps
+function screens(r, os) {
+  const list = [];
+  if (r) {
+    r.steps.forEach((s, i) => list.push({ kind: "step", r, s, n: i + 1 }));
+    if (r.test !== false) list.push({ kind: "test", r });
+  }
+  list.push({ kind: "os", r: SAVE });
+  SAVE.steps.forEach((s, i) => list.push({ kind: "step", r: SAVE, s, n: i + 1, os }));
+  return list;
+}
+// the address: #claude/3 · #claude/save/windows/2 · #save · #save/macos/1
+function parse() {
+  const p = decodeURIComponent(location.hash.slice(1)).split("/").filter(Boolean);
+  if (!p.length) return { start: true };
+  const r = CHATS.find(x => x.id === p[0]) || null;
+  if (!r && p[0] !== "save") return { start: true };
+  if (r && p[1] !== "save") {
+    const n = Math.max(1, parseInt(p[1], 10) || 1);
+    return { r, at: Math.min(n, r.steps.length + (r.test !== false ? 1 : 0)) - 1 };
+  }
+  const q = r ? p.slice(2) : p.slice(1), os = OS.includes(q[0]) ? q[0] : null;
+  const base = r ? r.steps.length + (r.test !== false ? 1 : 0) : 0;
+  if (!os) return { r, at: base, os: null };
+  const n = Math.min(Math.max(1, parseInt(q[1], 10) || 1), SAVE.steps.length);
+  return { r, os, at: base + n };
+}
+function hashOf(r, list, at, os) {
+  const it = list[at], pre = r ? r.id + "/" : "";
+  if (it.kind === "os") return "#" + (r ? pre + "save" : "save");
+  if (it.r === SAVE) return "#" + pre + (r ? "save/" : "save/") + os + "/" + it.n;
+  return "#" + r.id + "/" + (at + 1);
+}
+const go = hash => { if (location.hash !== hash) location.hash = hash; else render(); };
+
+function copyText(el, btn) {
+  const t = el.textContent, done = () => { btn.textContent = TEXT.copied; setTimeout(() => { btn.textContent = TEXT.copy; }, 1500); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, fallback); else fallback();
+  function fallback() {
+    const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    let ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    if (ok) { s.removeAllRanges(); done(); }
+  }
+}
+function stuck(r) {
+  if (!r.stuck || !r.stuck.length) return null;
+  return h("details", null, h("summary", null, TEXT.stuck), h("ul", null, r.stuck.map(s => h("li", null, h("b", null, s.problem), s.fix))));
+}
+function addressBox(r) {
+  return h("div", { class: "addr" }, h("p", null, UI.typeAddr), h("code", null, r.address),
+    h("a", { class: "btn", href: r.url, target: "_blank", rel: "noopener" }, fill(UI.open, { name: r.name })));
+}
+function pictures(r, n) {
+  const list = (PICTURES[r.id] || {})[n] || [];
+  return list.map(([src, alt, w, hgt]) => h("figure", null, h("img", { src: "img/" + src, alt, width: w, height: hgt, loading: "lazy" })));
+}
+
+const main = $("#main"), nav = $("#nav"), back = $("#back"), next = $("#next");
+let onBack = null, onNext = null;
+back.addEventListener("click", () => onBack && onBack());
+next.addEventListener("click", () => onNext && onNext());
+
+function render() {
+  const st = parse();
+  main.replaceChildren();
+  if (st.start) {
+    document.title = UI.title;
+    nav.hidden = true;
+    const card = r => h("li", null, h("a", { class: "choice", href: "#" + r.id }, h("b", null, r.name), h("span", null, r.need)));
+    const main4 = CHATS.filter(r => r.id !== "antigravity"), minor = CHATS.filter(r => r.id === "antigravity");
+    main.append(h("h1", null, UI.choose), h("ul", { class: "choices" }, main4.map(card)),
+      minor.length ? h("ul", { class: "choices minor minor-gap" }, minor.map(card)) : null,
+      h("p", { class: "skip" }, h("a", { href: "#save" }, UI.skip)));
+    return focusTop();
+  }
+  const { r, os } = st, list = screens(r, os || "windows"), at = Math.min(st.at, list.length - 1), it = list[at];
+  const total = list.length;
+  nav.hidden = false;
+  main.append(h("div", { class: "where" }, h("span", null, it.r.name), h("span", null, fill(UI.step, { k: at + 1, n: total }))),
+    h("div", { class: "bar", role: "progressbar", "aria-valuemin": 1, "aria-valuemax": total, "aria-valuenow": at + 1, "aria-label": fill(UI.step, { k: at + 1, n: total }) },
+      h("i", { style: `width:${((at + 1) / total * 100).toFixed(1)}%` })));
+  document.title = `${it.r.name} · ${fill(UI.step, { k: at + 1, n: total })}`;
+  const prevHash = at === 0 ? "#" : hashOf(r, list, at - 1, os);
+  onBack = () => go(prevHash);
+  back.textContent = UI.back;
+  let nextHash = at < total - 1 ? hashOf(r, list, at + 1, os) : null;
+
+  if (it.kind === "step") {
+    const s = it.s, o = it.os || "windows";
+    main.append(h("p", { class: "do" }, pick(s.do, o)));
+    const cmd = s.command ? pick(s.command, o) : "";
+    if (it.r.address && (cmd || pick(s.do, o).includes(it.r.address))) main.append(addressBox(it.r));
+    if (pick(s.see, o)) main.append(h("p", { class: "see" }, h("b", null, TEXT.see), h("span", null, pick(s.see, o))));
+    if (s.tip) main.append(h("p", { class: "tip" }, s.tip));
+    main.append(...pictures(it.r, it.n), stuck(it.r));
+  } else if (it.kind === "test") {
+    const bubble = h("p", { class: "bubble" }, TEST_PROMPT), copy = h("button", { type: "button" }, TEXT.copy);
+    copy.addEventListener("click", () => copyText(bubble, copy));
+    main.append(h("p", { class: "do" }, TEXT.finalDo), bubble, copy,
+      h("p", { class: "see" }, h("b", null, TEXT.see), h("span", null, TEXT.finalSee)), stuck(it.r));
+  } else {   // which computer, then the save steps
+    const pickOS = o => go((r ? "#" + r.id + "/save/" : "#save/") + o + "/1");
+    main.append(h("p", null, SAVE.need), h("p", { class: "do" }, UI.whichOS),
+      h("div", { class: "os" }, OS.map(o => { const b = h("button", { type: "button", "aria-pressed": String(os === o) }, o === "windows" ? TEXT.windows : TEXT.macos); b.addEventListener("click", () => pickOS(o)); return b; })));
+    nextHash = null;
+  }
+  if (it.kind === "os") { next.hidden = true; }
+  else if (nextHash) { next.hidden = false; next.textContent = UI.next; onNext = () => go(nextHash); }
+  else { next.hidden = false; next.textContent = UI.again; onNext = () => go("#"); }
+  focusTop();
+}
+function focusTop() { window.scrollTo(0, 0); main.focus({ preventScroll: true }); }
+addEventListener("hashchange", render);
+render();
+</script>
+</body>
+</html>
