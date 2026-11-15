@@ -127,7 +127,9 @@ const SETUP_ROUTES = [
     steps: [
       { do: "Go to chatgpt.com and select “Sign up for free”.",
         see: "A box called “Log in or sign up”.", tip: "Already have an account? Select “Log in”." },
-      { do: "Choose how to sign up: Google, Microsoft, Apple, phone, or email." },
+      // Seen on chatgpt.com, signed out, 15 November 2026: the sign-up box offered Google, Apple, phone and email.
+      // OpenAI's help page also names Microsoft; the screen did not show it.
+      { do: "Choose how to sign up: Google, Apple, phone, or email." },
       { do: "Open your account menu, then “Settings”, then “Data controls”." },
       { do: "Select “Improve the model for everyone”, turn it off, and select “Done”.",
         tip: "A thumbs up or down on an answer may still send that chat for training." },
@@ -230,7 +232,7 @@ const UI = {
                  "Settings & help"; the signed-in menu was not seen, so step 3 is unchanged.
    claude-*      https://claude.ai/ (it opened https://claude.ai/login). The screen also offers "Continue with Apple".
    chatgpt-*     https://chatgpt.com/ and the box its "Sign up for free" button opened. The box offered Google, Apple,
-                 phone and email; it showed no Microsoft option (step 2 names Microsoft, from OpenAI's help pages).
+                 phone and email, so step 2 lists those; OpenAI's help page also names Microsoft.
    copilot-*     https://copilot.com/ and the page its "Sign in" button opened (login.microsoftonline.com), which
                  offered a Microsoft account, "Continue with Google" and "Continue with Apple".
    antigravity-* https://antigravity.google/download (the page picks the tab for the visitor's system; here Windows).
