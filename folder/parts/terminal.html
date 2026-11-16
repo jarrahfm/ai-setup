@@ -1,0 +1,71 @@
+<section id="terminal">
+  <h2>Run an AI agent in the terminal: Claude Code</h2>
+  <p>Claude Code is an AI agent from Anthropic. It works inside a terminal, in one folder on your computer.</p>
+  <p class="warn">Before you start: you need a paid Claude plan (Pro, Max, Ultra, Team or Enterprise) or a Claude Console account. The free Claude plan does not include Claude Code. Your computer needs Windows 10 (version 1809 or later) or macOS 13 or later. Kuwait is on Anthropic’s list of supported countries.</p>
+
+  <ol class="steps">
+    <li><b>Open a terminal.</b> A terminal is a window where you type commands instead of clicking. It shows a blinking cursor.
+      <div><b>Windows:</b> press <b>Win + X</b> and choose <b>Windows PowerShell</b> (or <b>Terminal</b>). Each line starts with <b>PS C:\Users\YourName&gt;</b>. If you do not see <b>PS</b>, you are in CMD, not PowerShell.</div>
+      <div><b>Mac:</b> press <b>Cmd + Space</b>, type <b>Terminal</b> and press Return. Or open Finder › Applications › Utilities and double-click <b>Terminal</b>.</div>
+      <span class="tip">You cannot click inside the terminal. Use the keyboard and the arrow keys.</span></li>
+
+    <li><b>Install Git.</b>
+      <div><b>Windows:</b> go to <b>git-scm.com/downloads/win</b> and select <b>“Click here to download”</b>. Run the installer. Click <b>Next</b> on each screen and keep the default choices. At “Adjusting your PATH environment”, keep the recommended option.</div>
+      <img src="img/terminal/git-windows-download.png" alt="The Git for Windows download page on git-scm.com. A red box and arrow mark the link “Click here to download”." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <div><b>Mac:</b> type the command below. If Git is not installed, your Mac asks to install it (Apple’s Xcode Command Line Tools). Follow the message.</div>
+      Check Git. Type this and press Enter:
+      <div class="copy" id="t-git">git --version</div><button type="button" class="cbtn" data-copy="t-git">Copy</button>
+      <img src="img/terminal/git-version-example.png" alt="Example: PowerShell and Mac Terminal after the command git --version. A red box marks the line git version 2.56.1." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip">Example picture. Your version number may be different.</span>
+      <span class="tip">Anthropic says Git for Windows is optional but recommended. Without it, Claude Code uses PowerShell instead. You do not need to learn Git.</span></li>
+
+    <li><b>Install Claude Code.</b> Copy the line for your computer, paste it into the terminal and press Enter.
+      <div><b>Windows (PowerShell):</b></div>
+      <div class="copy" id="t-win-install">irm https://claude.ai/install.ps1 | iex</div><button type="button" class="cbtn" data-copy="t-win-install">Copy</button>
+      <div><b>Mac (Terminal):</b></div>
+      <div class="copy" id="t-mac-install">curl -fsSL https://claude.ai/install.sh | bash</div><button type="button" class="cbtn" data-copy="t-mac-install">Copy</button>
+      <img src="img/terminal/claude-install-commands.png" alt="The Claude Code quickstart page. Red boxes mark the Mac command and the Windows PowerShell command." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip">The command shows no progress while it downloads. Leave the window open and wait. At the end you see “Claude Code successfully installed!”</span>
+      <img src="img/terminal/install-windows-example.png" alt="Example: PowerShell after the install command. Red boxes mark the command, the line Claude Code successfully installed!, and the version number." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <img src="img/terminal/install-mac-example.png" alt="Example: Mac Terminal after the install command. Red boxes mark the command, the line Claude Code successfully installed!, and the version number." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip">Example pictures. Your screen shows more lines.</span>
+      <span class="tip">“irm is not recognized” means you are in CMD, not PowerShell. Open PowerShell and try again.</span></li>
+
+    <li><b>Check it works.</b> Open a <b>new</b> terminal window and type:
+      <div class="copy" id="t-ver">claude --version</div><button type="button" class="cbtn" data-copy="t-ver">Copy</button>
+      <span class="tip">You should see a version number followed by “(Claude Code)”. If it says “not recognized” or “command not found”, follow the fix in Anthropic’s <a href="https://code.claude.com/docs/en/terminal-guide">terminal guide</a>, then open a new window and try again.</span></li>
+
+    <li><b>Make a project folder and start Claude Code.</b> Type each line and press Enter after each one. It is the same on Windows and Mac.
+      <div class="copy" id="t-start">mkdir my-science-page
+cd my-science-page
+claude</div><button type="button" class="cbtn" data-copy="t-start">Copy</button>
+      <img src="img/terminal/start-claude-example.png" alt="Example: PowerShell and Mac Terminal. Arrows mark 1 New folder (mkdir my-science-page), 2 Go inside (cd my-science-page), 3 Start Claude (claude)." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip">Example picture. <b>mkdir</b> makes a new folder. <b>cd</b> goes into it. The folder is inside your user folder. Put nothing private in it.</span></li>
+
+    <li><b>Log in the first time.</b> Claude Code asks you to log in. A browser window opens. Sign in with your Claude account and follow the steps. Claude Code saves your login, so you do this only once.
+      <span class="tip">To change account later, type <b>/login</b> inside Claude Code.</span></li>
+
+    <li><b>Know the first commands.</b> Type your request in plain English and press Enter. These help too:
+      <div><b>/help</b> – show the commands</div>
+      <div><b>/init</b> – make a starting rules file (CLAUDE.md)</div>
+      <div><b>/clear</b> – start a new conversation</div>
+      <div><b>Esc</b> – stop Claude while it is working</div>
+      <div><b>/exit</b> or <b>Ctrl + D</b> twice – leave Claude Code</div>
+      <div><b>claude -c</b> (in the terminal) – continue your last conversation in this folder</div></li>
+
+    <li><b>Read every permission request.</b> A request shows what Claude wants to do, then your choices. Read the action first. Choose with the arrow keys and Enter, or press Esc to cancel.
+      <img src="img/terminal/claude-permission-prompt.png" alt="A Claude Code permission request from Anthropic's docs. Red box 1 marks what Claude wants to run. Red box 2 marks the choices: Yes; Yes, and don't ask again; Yes, and switch to auto mode; No." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip"><b>Yes</b> allows it once. <b>Yes, and don’t ask again</b> stops Claude asking about the same action. For a command, this is saved for later sessions in this folder too. <b>No</b> stops it.</span>
+      <span class="tip">New versions start in <b>auto mode</b>: a second AI model checks actions for you, so you see fewer requests. To check every action yourself, press <b>Shift + Tab</b> once. The bottom line then says <b>manual mode on</b>.</span>
+      <span class="tip">Never start Claude with <b>--dangerously-skip-permissions</b>. Anthropic says to use it only in isolated containers and virtual machines.</span></li>
+
+    <li><b>Give it your rules in CLAUDE.md.</b> CLAUDE.md is a plain text file in your project folder. Claude reads it at the start of every session. Type <b>/init</b> to make a first version, or ask Claude:
+      <div class="copy" id="t-rules">Create a file called CLAUDE.md in this folder with these rules:
+- Write in simple English for 12-year-olds.
+- Ask before you delete or move a file.
+- List every fact on the page with its source.</div><button type="button" class="cbtn" data-copy="t-rules">Copy</button>
+      <span class="tip">Keep the rules short and clear. Anthropic suggests under 200 lines. Claude treats them as guidance, so still read every permission request.</span></li>
+  </ol>
+
+  <p class="tip">Sources, read 16 November 2026: Anthropic, Claude Code docs: Quickstart, Terminal guide for new users, Advanced setup, Configure permissions, Choose a permission mode, How Claude remembers your project; Anthropic, Supported Regions Policy; git-scm.com: Install for Windows, Install for macOS, Pro Git “1.5 Installing Git”; Apple: Terminal User Guide “Open or quit Terminal on Mac”, Command Line Primer; Microsoft Learn: Set-Location, Using aliases, Set up Node.js on native Windows. Pictures marked “example” are mock-ups, not real screenshots.</p>
+</section>
