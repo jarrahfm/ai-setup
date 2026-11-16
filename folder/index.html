@@ -27,6 +27,14 @@
   [hidden]{display:none!important}
   footer{color:var(--muted);font-size:14px;margin-top:28px}
   a{color:var(--teal)}
+  .more{background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 16px;margin-top:26px}
+  .more a{font-weight:700;margin-right:14px;white-space:nowrap}
+  main section{margin-top:34px;padding-top:6px;border-top:3px solid var(--line)}
+  h3{font-size:19px;margin:20px 0 8px;color:var(--navy)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:16px;margin-top:10px}
+  th,td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+  th{background:#eef3f8}
+  .warn{background:#fdecea;border:2px solid #ef6b57;border-radius:14px;padding:12px 14px}
 </style>
 </head>
 <body>
@@ -92,6 +100,63 @@ claude</div><button type="button" class="cbtn" data-copy="c4">Copy</button>
     <li>Open your folder and double-click <b>index.html</b>. It opens in your browser.</li>
     <li>Ask for one change at a time. Check every number against a trusted source.</li>
   </ol>
+
+  <!-- PARTS:START -->
+  <div class="more"><b>Full guides:</b> <a href="#editors">VS Code with Copilot, and Codex CLI</a></div>
+
+<section id="editors">
+  <h2>More apps: VS Code with GitHub Copilot, and Codex CLI</h2>
+  <p>These two apps also work in one folder on your laptop. VS Code is an editor with buttons. Codex CLI runs in a terminal: a window where you type commands.</p>
+
+  <h3>A · VS Code with GitHub Copilot</h3>
+  <ol class="steps">
+    <li>Go to <b>code.visualstudio.com/download</b>. Select <b>Windows</b> and install VS Code like any app.<span class="tip">VS Code needs Windows 10 or 11 (64-bit), or macOS 12.0 or later.</span>
+      <img src="img/editors/e-vscode-download.png" alt="The VS Code download page. The blue Windows button is circled in red, with an arrow labelled Click here." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Open VS Code. Move the mouse over the <b>Copilot icon</b> in the Status Bar (the bar at the bottom) and select <b>“Use AI Features”</b>. Sign in with your GitHub account and follow the steps.<span class="tip">If you have no Copilot plan, VS Code signs you up for <b>Copilot Free</b>.</span></li>
+    <li>Know what “free” means. GitHub's plans page says Copilot Free has “limited access to a selection of Copilot features”, an allowance of AI credits, “Auto model selection only”, and agents marked <b>“Limited”</b>. It gives no number for agent use. Inline suggestions are “Limited to 2000 completions per month”.
+      <span class="tip">To see how much you used, open the Copilot status dashboard from the Status Bar. Copilot Free is only for people who do not already get Copilot through an organization. GitHub also says verified teachers “may be eligible for free access to Copilot Pro”.</span>
+      <img src="img/editors/e-copilot-plans.png" alt="GitHub's Copilot plans table. The Copilot Free row is boxed in red, and the word Limited under Agents is circled." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Telemetry is on in Copilot Free. To turn it off, open VS Code Settings and set <b>telemetry.telemetryLevel</b> to <b>off</b>. You can also change it in your Copilot settings on github.com.</li>
+    <li>Make a new, empty folder, for example <b>Documents › my-science-page</b>. Put nothing private in it. In VS Code select <b>File › Open Folder</b> and open it.<span class="tip">If VS Code asks whether you trust the folder, select “Manage”, then “Trust”. Trust only your own new folder. For a folder from someone else, keep restricted mode: it turns the agent off.</span></li>
+    <li>Press <b>Ctrl+Alt+I</b> to open the Chat view. Select <b>+</b> to start a new chat. Below the message box choose <b>Copilot</b>, <b>Agent</b>, <b>Auto</b> and <b>Manual permissions</b>.
+      <img src="img/editors/e-vscode-chat-example.png" alt="Example mock-up of VS Code: the plus button for a new chat is circled in orange, and Manual permissions below the message box is circled in red with the label Keep this." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip">Example picture (a mock-up, not a real screen).</span></li>
+    <li>Keep <b>“Manual permissions”</b>. It is the default: the agent can edit files in your folder, and it asks before it runs tools or uses other resources. Read each request before you choose “Allow Once”.
+      <span class="tip"><b>Never</b> choose “Allow all” or “Autopilot”, never type <b>/yolo</b>, and never turn on the setting <b>chat.tools.global.autoApprove</b>. VS Code warns that these skip confirmation “for potentially destructive actions”.</span></li>
+    <li>Your rules file: Copilot reads <b>AGENTS.md</b> (or <b>.github/copilot-instructions.md</b>) in your folder. Use the AGENTS.md prompt in step 3 of this guide.<span class="tip">Rules guide the AI, but they do not lock anything. VS Code says: “Instructions guide the model and are not an enforcement boundary.”</span></li>
+  </ol>
+  <p class="warn">VS Code says file contents, terminal output and diagnostic information from your folder “are sent as context to language models and tools”. Keep personal data out of the folder.</p>
+
+  <h3>B · Codex CLI (OpenAI)</h3>
+  <p>Codex CLI is OpenAI's coding agent for the terminal. It can read files, edit them and run commands in your folder. You sign in with your ChatGPT account.</p>
+  <ol class="steps">
+    <li><b>Windows:</b> open a <b>new PowerShell window</b> and paste OpenAI's install command:
+      <div class="copy" id="e-c1">powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"</div><button type="button" class="cbtn" data-copy="e-c1">Copy</button>
+      <span class="tip"><b>Mac:</b> open Terminal and paste <code>curl -fsSL https://chatgpt.com/codex/install.sh | sh</code>. The same page also lists an npm command; you do not need it. On Windows, OpenAI says to use the normal Windows way by default; WSL (Linux inside Windows) is only for people who need Linux tools. OpenAI recommends Windows 11; Windows 10 (version 1809 or newer) is “best effort”.</span>
+      <img src="img/editors/e-codex-install.png" alt="OpenAI's Codex CLI page. The Windows tab is circled in red, the line Start these from a new PowerShell window is circled, and the install command is boxed in orange with the label Copy this." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Open a new PowerShell window. Go into your folder and start Codex:
+      <div class="copy" id="e-c2">cd Documents\my-science-page
+codex</div><button type="button" class="cbtn" data-copy="e-c2">Copy</button>
+      <span class="tip">The first time, choose <b>“Sign in with ChatGPT”</b>. A browser window opens: sign in there. OpenAI’s help page says Codex is included on Free and Go, but its pricing page lists the CLI only from Plus. If the CLI does not work on a free account, use the ChatGPT desktop app instead.</span>
+      <img src="img/editors/e-codex-terminal-example.png" alt="Example mock-up of PowerShell: the cd and codex commands are boxed in red with the label Start Codex, and the /permissions command is circled in orange with the label Check mode." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip">Example picture (a mock-up, not a real screen).</span></li>
+    <li>Type <b>/permissions</b> to see and change the mode. Choose <b>“Ask for approval”</b>: OpenAI says “For most work, start with Ask for approval.” Codex then works inside your folder and asks before it edits files outside it or uses the internet.
+      <span class="tip"><b>Never</b> choose “Full access”, and never start Codex with <b>--yolo</b> or <b>--dangerously-bypass-approvals-and-sandbox</b>. OpenAI: full access “might perform unintentional destructive actions that can lead to data loss.” A new folder that is not a Git folder may start <b>read-only</b>: Codex can read but not write. Then use /permissions to let it work in the folder.</span></li>
+    <li>Your rules file: Codex reads <b>AGENTS.md</b> “before doing any work”. Use the AGENTS.md prompt in step 3 of this guide, or type <b>/init</b> to make one.</li>
+  </ol>
+
+  <h3>C · Compare</h3>
+  <table>
+    <thead><tr><th>App</th><th>Needs a terminal?</th><th>Free?</th><th>Rules file</th></tr></thead>
+    <tbody>
+      <tr><td>VS Code + GitHub Copilot</td><td>No. You click buttons. The agent can run commands for you after you allow them.</td><td>Yes: Copilot Free, with limits (agents “Limited”)</td><td>AGENTS.md or .github/copilot-instructions.md</td></tr>
+      <tr><td>Codex CLI</td><td>Yes: PowerShell on Windows, Terminal on Mac</td><td>Not sure: OpenAI’s pages disagree; the pricing page lists the CLI from Plus</td><td>AGENTS.md</td></tr>
+    </tbody>
+  </table>
+
+  <p class="tip">Sources (pages read 16 November 2026): Microsoft, code.visualstudio.com: Download, Set up GitHub Copilot in VS Code, Quickstart: Complete your first task with an agent, Manage approvals and permissions, Secure AI-assisted development, Use custom instructions, Custom instructions reference. GitHub Docs: Plans for GitHub Copilot. OpenAI, learn.chatgpt.com: Codex CLI, Authentication, Permissions, Agent approvals &amp; security, Windows sandbox, WSL, Custom instructions with AGENTS.md; OpenAI Help Center: Using Codex with your ChatGPT plan. Screens change: if a button has moved, look for the same words nearby.</p>
+</section>
+  <!-- PARTS:END -->
 
   <h2>Before you start</h2>
   <p class="warn">Never put personal data in the folder or in a prompt: no student names, phone numbers, civil ID numbers or passwords. The files the agent reads are sent to the AI company.</p>
