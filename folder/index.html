@@ -102,7 +102,83 @@ claude</div><button type="button" class="cbtn" data-copy="c4">Copy</button>
   </ol>
 
   <!-- PARTS:START -->
-  <div class="more"><b>Full guides:</b> <a href="#terminal">Claude Code in the terminal (with Git)</a> <a href="#editors">VS Code with Copilot, and Codex CLI</a></div>
+  <div class="more"><b>Full guides:</b> <a href="#desktop">Desktop AI agent apps</a> <a href="#terminal">Claude Code in the terminal (with Git)</a> <a href="#editors">VS Code with Copilot, and Codex CLI</a></div>
+
+<section id="desktop">
+  <h2>Desktop AI agent apps (no terminal needed)</h2>
+  <p>These three apps work like normal programs: you click, you do not type commands. Each app works inside one folder on your computer. Choose one app. Make a new, empty folder for it, for example <b>Documents › my-science-page</b>. Put nothing private in it.</p>
+
+  <h3>A · Antigravity app (Google)</h3>
+  <p>A desktop app from Google. Its AI agents work inside a <b>project</b>: one or more folders that you choose.</p>
+  <p><b>Free or paid:</b> free with a Google account. Google says people without a Google AI Pro or Ultra plan get “a meaningful quota, refreshed weekly” and “a weekly rate limit”. Google gives no numbers and says the limits can change.</p>
+  <ol class="steps">
+    <li>Go to <b>antigravity.google/download</b>. Under <b>Antigravity App</b>, choose <b>Windows</b> and select <b>Download for x64</b>.
+      <span class="tip">Your computer needs Windows 10 (64-bit) or later. If your computer has an ARM processor, choose <b>Download for ARM64</b>. <b>Mac:</b> choose <b>macOS</b>, then <b>Download for Apple Silicon</b> or <b>Download for Intel</b> (macOS 13 Ventura or later).</span>
+      <img src="img/desktop/ag-download.png" alt="The Antigravity download page. The Windows tab and the Download for x64 button are circled in orange, with an arrow labelled Windows: click." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li><b>Windows:</b> run the downloaded <b>.exe</b> file and follow the setup steps. <b>Mac:</b> open <b>Antigravity.dmg</b> and drag Antigravity into your Applications folder.</li>
+    <li>Open Antigravity and sign in with a <b>personal</b> Google account. The sign-in opens in your browser.</li>
+    <li>The app asks what best describes your work. Choose <b>Science</b>, then <b>Continue</b>. Then confirm the Terms &amp; Data Use notice.
+      <span class="tip">Science gives you the simple “Knowledge Work” screen. It hides the Git, terminal and code-diff controls.</span>
+      <img src="img/desktop/ag-role-science.png" alt="Antigravity's first screen from Google's docs: six work types. The Science button is circled in orange, with an arrow labelled Choose Science." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Optional: click <b>Settings</b> at the bottom of the left sidebar. Under <b>Account</b>, turn off <b>Enable Telemetry</b>. When it is on, Google uses your interactions to improve Antigravity and its models.</li>
+    <li>Open your folder: click the <b>New Project</b> icon (a folder with a plus sign) in the left sidebar. Click <b>Add Folder</b>, choose your folder, then click <b>Create</b>.</li>
+    <li>Check the permission picker in the message box. Keep <b>Default</b> (“Ask before sensitive operations”). The agent reads and writes files in your folder without asking. It asks before it touches files outside the folder.
+      <span class="tip"><b>Never</b> choose <b>Turbo</b> (“Run all commands without restrictions”). Turbo gives the agent your full computer. If the app's sandbox is not available, the app starts in <b>Request Review</b> instead: it asks before every command.</span>
+      <img src="img/desktop/ag-permission-default.png" alt="The permission picker in Antigravity's message box, from Google's docs. Default is circled in orange with the label Keep Default. Turbo is circled in red with the label Never Turbo." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Your rules file: Antigravity reads <b>AGENTS.md</b> (or GEMINI.md) in your project folder, and it is always active. Type this to the agent:
+      <div class="copy" id="d-ag-rules">Create a file called AGENTS.md in this folder with these rules:
+- Write in simple English for 12-year-olds.
+- Ask before you delete or move a file.
+- List every fact on the page with its source.</div><button type="button" class="cbtn" data-copy="d-ag-rules">Copy</button></li>
+  </ol>
+
+  <h3>B · ChatGPT desktop app, Codex view (OpenAI)</h3>
+  <p>The ChatGPT app for your computer. Its <b>Codex</b> view is an AI agent that can work with a folder on your computer.</p>
+  <p><b>Free or paid:</b> OpenAI says: “Codex is included across ChatGPT plans, including Free and Go. Usage limits vary by plan.” No numbers are given.</p>
+  <ol class="steps">
+    <li><b>Windows:</b> install the ChatGPT desktop app from the <b>Microsoft Store</b>. OpenAI's download page, <b>chatgpt.com/download</b>, has a <b>Download for Windows</b> button. <b>Mac:</b> on OpenAI's quickstart page, open the <b>Download ChatGPT</b> menu and choose <b>macOS (Apple silicon)</b> or <b>macOS (Intel)</b>.
+      <img src="img/desktop/cx-download.png" alt="The Download ChatGPT menu on OpenAI's quickstart page. The two macOS items and the Windows item are circled in orange, with arrows labelled Mac and Windows." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Open the app and sign in with your ChatGPT account.</li>
+    <li>Select <b>Codex</b> from the ChatGPT menu at the top.
+      <img src="img/desktop/cx-codex-menu.png" alt="The ChatGPT menu from OpenAI's docs, with two items: ChatGPT and Codex. Codex is circled in orange, with an arrow labelled Choose Codex." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Open your folder as a project. On Windows, click <b>Add new project</b> or press <b>Ctrl+O</b>, then choose your folder. ChatGPT can read and change the files in the folder you choose.</li>
+    <li>Open the permissions control below the message box. Choose <b>Ask for approval</b> before you send your first message. Codex can then read and edit files in your folder. It asks before it uses the internet or goes outside the folder.
+      <span class="tip"><b>Never</b> choose <b>Full access</b> (“Unrestricted access to the internet and any file on your computer”). OpenAI warns that Codex could then do things by mistake that “can lead to data loss”.</span>
+      <img src="img/desktop/cx-permissions.png" alt="The permissions menu from OpenAI's docs. Ask for approval is circled in orange with the label Use this. Full access is circled in red with the label Never. The mode button below the message box is circled with the label Check here." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px">
+      <span class="tip">If Codex says it can only read, this is normal for a new folder. OpenAI says a folder without Git can start as read-only until you trust it. Check the mode again.</span></li>
+    <li>Your rules file: Codex reads <b>AGENTS.md</b> “before doing any work”. Type this to Codex:
+      <div class="copy" id="d-cx-rules">Create a file called AGENTS.md in this folder with these rules:
+- Write in simple English for 12-year-olds.
+- Ask before you delete or move a file.
+- List every fact on the page with its source.</div><button type="button" class="cbtn" data-copy="d-cx-rules">Copy</button></li>
+  </ol>
+
+  <h3>C · Claude Desktop (Anthropic): Code tab and Cowork</h3>
+  <p>The Claude app for your computer. The <b>Code</b> tab gives you Claude Code with buttons instead of a terminal. <b>Cowork</b> does multi-step tasks with your documents and files.</p>
+  <p class="warn"><b>Paid plan needed.</b> The Claude app itself is free, but Claude Code needs a Pro, Max, Ultra, Team or Enterprise plan. Cowork is also for paid plans only.</p>
+  <ol class="steps">
+    <li>Go to <b>claude.ai/download</b>. In the <b>Desktop</b> box, select <b>Download</b> next to macOS or Windows.
+      <span class="tip">There is also a Windows (arm 64) download and a Microsoft Store button.</span>
+      <img src="img/desktop/cl-download.png" alt="The Desktop box on Claude's download page. The Download buttons for macOS and Windows are circled in orange, with arrows labelled Mac and Windows." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Run the installer. Open Claude from the Start menu (Windows) or the Applications folder (Mac). Sign in with your Anthropic account.</li>
+    <li>Click the <b>Code</b> tab at the top of the sidebar.
+      <span class="tip">If you see a prompt to upgrade, you need a paid plan first.</span></li>
+    <li>Open your folder. In the row under the prompt box, click the first control (the environment) and choose the top item under <b>Local</b>. Then click the folder control next to it, select <b>Open folder...</b>, and choose your folder.</li>
+    <li>In the same row, open the mode selector. Choose <b>Manual</b>: Claude asks before it edits files or runs commands, and you can accept or reject each change. Check the mode before your first message.
+      <span class="tip"><b>Never</b> choose <b>Bypass permissions</b>. Anthropic says: “Only use this in sandboxed containers or VMs.”</span>
+      <img src="img/desktop/cl-modes.png" alt="The permission mode table from Anthropic's docs. The Manual row is circled in orange with the label Start here. The Bypass permissions row is circled in red with the label Never." loading="lazy" style="width:100%;border-radius:12px;border:2px solid #e2e8f0;margin-top:8px"></li>
+    <li>Your rules file: Claude reads <b>CLAUDE.md</b> in your folder at the start of every session. Type this to Claude:
+      <div class="copy" id="d-cl-rules">Create a file called CLAUDE.md in this folder with these rules:
+- Write in simple English for 12-year-olds.
+- Ask before you delete or move a file.
+- List every fact on the page with its source.</div><button type="button" class="cbtn" data-copy="d-cl-rules">Copy</button>
+      <span class="tip">Claude reads AGENTS.md only when there is no CLAUDE.md.</span></li>
+  </ol>
+  <p><b>Cowork</b> (for documents, not code): in the message box, select <b>Cowork</b>. If you do not see “Chat” and “Cowork”, every conversation can already do Cowork tasks. Claude can only read and write files in the folders you connect, so connect only your new folder. Choose <b>Manual</b> (“Manually approve”) in the mode selector: Claude asks before each action. <b>Never</b> choose <b>Skip</b> (“Skip all approvals”): then nothing checks Claude's actions. Instead of a rules file, Cowork uses <b>folder instructions</b> when you select a local folder. Cowork always asks before it deletes a file for ever.
+    <span class="tip">Cowork tasks run on Anthropic's servers, not on your computer.</span></p>
+
+  <p class="tip">Sources (pages read 16 November 2026): Google: antigravity.google/download; Antigravity docs: Get started, Settings, Permissions, Rules, Plans. OpenAI: chatgpt.com/download; ChatGPT Learn: Quickstart, Permissions, ChatGPT desktop app for Windows, Agent approvals and security, AGENTS.md; OpenAI Help Center: Codex in ChatGPT plans (article 11369540), ChatGPT Work and Codex. Anthropic: claude.com/download; Claude Code docs: Get started with the desktop app, Desktop application, Memory (CLAUDE.md); Claude Help Center: Get started with Claude Cowork. Screens change: if a button has moved, look for the same words nearby.</p>
+</section>
 
 <section id="terminal">
   <h2>Run an AI agent in the terminal: Claude Code</h2>
