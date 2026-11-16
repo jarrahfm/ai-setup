@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up an AI project folder on your computer</title>
+<style>
+  :root{--navy:#0b3d5c;--teal:#0a6e8a;--gold:#f2a516;--ink:#10212e;--muted:#566577;--bg:#f4f7fb;--line:#e2e8f0}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
+  header{background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;padding:22px 18px}
+  header h1{margin:0 0 6px;font-size:26px;line-height:1.2}
+  header p{margin:0;opacity:.93}
+  main{max-width:760px;margin:0 auto;padding:16px 16px 48px}
+  h2{font-size:21px;margin:26px 0 10px;color:var(--navy)}
+  .pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .pick button{font:inherit;font-weight:800;padding:14px 10px;border-radius:14px;border:3px solid var(--teal);background:#fff;color:var(--teal);cursor:pointer;min-height:64px}
+  .pick button[aria-pressed=true]{background:var(--teal);color:#fff}
+  .pick small{display:block;font-weight:600;font-size:14px;opacity:.85}
+  ol.steps{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:s}
+  ol.steps li{background:#fff;border:2px solid var(--line);border-left:8px solid var(--gold);border-radius:14px;padding:12px 14px 12px 54px;position:relative;counter-increment:s}
+  ol.steps li::before{content:counter(s);position:absolute;left:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--ink);font-weight:800;display:grid;place-items:center}
+  .tip{color:var(--muted);font-size:16px;display:block;margin-top:4px}
+  .copy{margin-top:8px;background:var(--ink);color:#fff;border-radius:12px;padding:10px 12px;font:15px/1.5 Consolas,"Cascadia Mono",monospace;white-space:pre-wrap}
+  .cbtn{margin-top:6px;font:inherit;font-weight:700;border:0;border-radius:999px;padding:8px 18px;background:var(--gold);color:var(--ink);cursor:pointer;min-height:44px}
+  .warn{background:#fdecea;border:2px solid #ef6b57;border-radius:14px;padding:12px 14px}
+  [hidden]{display:none!important}
+  footer{color:var(--muted);font-size:14px;margin-top:28px}
+  a{color:var(--teal)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Set up an AI project folder on your computer</h1>
+  <p>An AI agent works in one folder on your laptop. It writes your page into the folder, opens it and checks it. Both apps below are free and need no terminal.</p>
+</header>
+<main>
+  <h2>1 · Choose one app</h2>
+  <div class="pick" role="group" aria-label="Choose an app">
+    <button type="button" data-app="ag" aria-pressed="true">Antigravity app<small>Google · personal Google account · 18+</small></button>
+    <button type="button" data-app="cx" aria-pressed="false">ChatGPT desktop app<small>OpenAI · Codex view · free plan</small></button>
+  </div>
+
+  <h2>2 · Install it and open your folder</h2>
+  <ol class="steps" id="ag">
+    <li>On your laptop, go to <b>antigravity.google/download</b>. Download Antigravity and install it like any app.<span class="tip">Windows 10 or 11, or macOS 13 or later.</span></li>
+    <li>Sign in with a <b>personal</b> Google account. When it asks about your work, choose “Science”.</li>
+    <li>Open “Settings”, then “Account”. Turn off “Enable Telemetry”.</li>
+    <li>Make a new, empty folder, for example <b>Documents › my-science-page</b>. Put nothing private in it.</li>
+    <li>Select “New Project”, then “Add Folder”. Choose your folder and select “Create”.</li>
+    <li>Keep the permission mode on <b>“Default”</b>: the agent works freely inside the folder and asks before it goes outside. Never choose “Turbo”.</li>
+  </ol>
+  <ol class="steps" id="cx" hidden>
+    <li><b>Windows:</b> install the ChatGPT desktop app from the Microsoft Store. <b>Mac:</b> install the ChatGPT desktop app for macOS from OpenAI.</li>
+    <li>Sign in with your ChatGPT account. OpenAI says Codex is included on the Free plan.</li>
+    <li>Choose <b>Codex</b> from the menu.</li>
+    <li>Make a new, empty folder, for example <b>Documents › my-science-page</b>. Put nothing private in it. Then open it in Codex as a local folder.</li>
+    <li>Use the <b>“Ask for approval”</b> mode. Never choose “Full access”.<span class="tip">If the agent says it can only read, check the mode below the message box.</span></li>
+  </ol>
+
+  <h2>3 · Give it your rules</h2>
+  <ol class="steps">
+    <li>Type this to the agent. It saves your standing instructions in a file called AGENTS.md, which the agent reads before it works.
+      <div class="copy" id="c1">Create a file called AGENTS.md in this folder with these rules:
+- Write in simple English for 12-year-olds.
+- Make one index.html file with no internet links.
+- Ask before you delete or move a file.
+- List every fact on the page with its source.</div>
+      <button type="button" class="cbtn" data-copy="c1">Copy</button></li>
+  </ol>
+
+  <h2>4 · Make your first simulation</h2>
+  <ol class="steps">
+    <li>Type your request. Say who it is for, what it shows, what learners do, and what they see.
+      <div class="copy" id="c2">Make index.html: a science simulation for 12-year-olds that shows why a hammer and a feather land together on the Moon. Let them drop both on Earth and on the Moon. Ask them to guess first. Then list every fact on the page with its source.</div>
+      <button type="button" class="cbtn" data-copy="c2">Copy</button></li>
+    <li>Read each permission request before you choose Allow.</li>
+    <li>Open your folder and double-click <b>index.html</b>. It opens in your browser.</li>
+    <li>Ask for one change at a time. Check every number against a trusted source.</li>
+  </ol>
+
+  <h2>Before you start</h2>
+  <p class="warn">Never put personal data in the folder or in a prompt: no student names, phone numbers, civil ID numbers or passwords. The files the agent reads are sent to the AI company.</p>
+
+  <p>Only want a chat in your browser? <a href="../">Open an AI chat, step by step</a>.</p>
+  <footer>Written from the makers’ documentation, read 15 November 2026: Google, Antigravity docs (getting started, settings, agent permissions, rules); OpenAI, Codex docs (permission modes, AGENTS.md) and Help Center (Codex in ChatGPT plans). Screens change: if a button has moved, look for the same words nearby.</footer>
+</main>
+<script>
+  const btns=[...document.querySelectorAll('.pick button')];
+  btns.forEach(b=>b.addEventListener('click',()=>{btns.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    document.getElementById('ag').hidden=b.dataset.app!=='ag';document.getElementById('cx').hidden=b.dataset.app!=='cx';}));
+  document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
+    const el=document.getElementById(b.dataset.copy);let ok=false;
+    try{await navigator.clipboard.writeText(el.textContent);ok=true;}catch(e){}
+    if(!ok){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);}
+    b.textContent=ok?'Copied':'Selected: press Ctrl+C';setTimeout(()=>b.textContent='Copy',2000);}));
+</script>
+</body>
+</html>
