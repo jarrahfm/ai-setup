@@ -13,7 +13,7 @@
   header p{margin:0;opacity:.93}
   main{max-width:760px;margin:0 auto;padding:16px 16px 48px}
   h2{font-size:21px;margin:26px 0 10px;color:var(--navy)}
-  .pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
   .pick button{font:inherit;font-weight:800;padding:14px 10px;border-radius:14px;border:3px solid var(--teal);background:#fff;color:var(--teal);cursor:pointer;min-height:64px}
   .pick button[aria-pressed=true]{background:var(--teal);color:#fff}
   .pick small{display:block;font-weight:600;font-size:14px;opacity:.85}
@@ -32,13 +32,14 @@
 <body>
 <header>
   <h1>Set up an AI project folder on your computer</h1>
-  <p>An AI agent works in one folder on your laptop. It writes your page into the folder, opens it and checks it. Both apps below are free and need no terminal.</p>
+  <p>An AI agent works in one folder on your laptop. It writes your page into the folder, opens it and checks it. Antigravity and the ChatGPT desktop app are free and need no terminal. Claude Code runs in a terminal and needs a paid Claude plan.</p>
 </header>
 <main>
   <h2>1 · Choose one app</h2>
   <div class="pick" role="group" aria-label="Choose an app">
     <button type="button" data-app="ag" aria-pressed="true">Antigravity app<small>Google · personal Google account · 18+</small></button>
     <button type="button" data-app="cx" aria-pressed="false">ChatGPT desktop app<small>OpenAI · Codex view · free plan</small></button>
+    <button type="button" data-app="cc" aria-pressed="false">Claude Code<small>Anthropic · terminal · paid plan</small></button>
   </div>
 
   <h2>2 · Install it and open your folder</h2>
@@ -58,10 +59,23 @@
     <li>Use the <b>“Ask for approval”</b> mode. Never choose “Full access”.<span class="tip">If the agent says it can only read, check the mode below the message box.</span></li>
   </ol>
 
+  <ol class="steps" id="cc" hidden>
+    <li>You need a paid Claude plan (Pro, Max, Ultra, Team or Enterprise) or a Claude Console account.</li>
+    <li>Open a terminal. <b>Windows:</b> open PowerShell and paste:
+      <div class="copy" id="c3">irm https://claude.ai/install.ps1 | iex</div><button type="button" class="cbtn" data-copy="c3">Copy</button>
+      <span class="tip"><b>Mac:</b> open Terminal and paste <code>curl -fsSL https://claude.ai/install.sh | bash</code></span></li>
+    <li>Open a new terminal and type <b>claude --version</b>. It should show a version number.</li>
+    <li>Make a new, empty folder, for example <b>Documents › my-science-page</b>. In the terminal, go into it and start Claude Code:
+      <div class="copy" id="c4">cd Documents\my-science-page
+claude</div><button type="button" class="cbtn" data-copy="c4">Copy</button>
+      <span class="tip">The first time, it asks you to log in. Follow the steps in your browser.</span></li>
+    <li>Read every permission request before you allow it. Never turn the checks off for the whole computer.</li>
+  </ol>
+
   <h2>3 · Give it your rules</h2>
   <ol class="steps">
-    <li>Type this to the agent. It saves your standing instructions in a file called AGENTS.md, which the agent reads before it works.
-      <div class="copy" id="c1">Create a file called AGENTS.md in this folder with these rules:
+    <li>Type this to the agent. It saves your standing instructions in a rules file, which the agent reads before it works. <span class="tip">Antigravity and Codex read AGENTS.md. Claude Code reads CLAUDE.md.</span>
+      <div class="copy" id="c1">Create a file called <span class="rf">AGENTS.md</span> in this folder with these rules:
 - Write in simple English for 12-year-olds.
 - Make one index.html file with no internet links.
 - Ask before you delete or move a file.
@@ -82,13 +96,14 @@
   <h2>Before you start</h2>
   <p class="warn">Never put personal data in the folder or in a prompt: no student names, phone numbers, civil ID numbers or passwords. The files the agent reads are sent to the AI company.</p>
 
-  <p>Only want a chat in your browser? <a href="../">Open an AI chat, step by step</a>.</p>
-  <footer>Written from the makers’ documentation, read 15 November 2026: Google, Antigravity docs (getting started, settings, agent permissions, rules); OpenAI, Codex docs (permission modes, AGENTS.md) and Help Center (Codex in ChatGPT plans). Screens change: if a button has moved, look for the same words nearby.</footer>
+  <p><a href="../tips/">Tips and tricks for working with AI</a> · Only want a chat in your browser? <a href="../">Open an AI chat, step by step</a>.</p>
+  <footer>Written from the makers’ documentation, read 15 November 2026: Google, Antigravity docs (getting started, settings, agent permissions, rules); OpenAI, Codex docs (permission modes, AGENTS.md) and Help Center (Codex in ChatGPT plans); Anthropic, Claude Code docs (quickstart read 16 November 2026, memory). Screens change: if a button has moved, look for the same words nearby.</footer>
 </main>
 <script>
   const btns=[...document.querySelectorAll('.pick button')];
   btns.forEach(b=>b.addEventListener('click',()=>{btns.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
-    document.getElementById('ag').hidden=b.dataset.app!=='ag';document.getElementById('cx').hidden=b.dataset.app!=='cx';}));
+    ['ag','cx','cc'].forEach(id=>document.getElementById(id).hidden=b.dataset.app!==id);
+    document.querySelectorAll('.rf').forEach(r=>r.textContent=b.dataset.app==='cc'?'CLAUDE.md':'AGENTS.md');}));
   document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
     const el=document.getElementById(b.dataset.copy);let ok=false;
     try{await navigator.clipboard.writeText(el.textContent);ok=true;}catch(e){}

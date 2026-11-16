@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tips and tricks for working with AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{--navy:#0b3d5c;--teal:#0a6e8a;--gold:#f2a516;--ink:#10212e;--muted:#566577;--bg:#f4f7fb;--line:#e2e8f0}
+  body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.45 "Segoe UI",system-ui,sans-serif}
+  header{background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;padding:28px 40px}
+  header h1{margin:0 0 6px;font-size:34px}
+  header p{margin:0;opacity:.92}
+  main{max-width:1100px;margin:0 auto;padding:24px 40px 60px}
+  h2{font-size:24px;margin:30px 0 12px;color:var(--navy)}
+  ol{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+  li{background:#fff;border:2px solid var(--line);border-left:10px solid var(--gold);border-radius:14px;padding:14px 18px}
+  li input{width:26px;height:26px;margin-top:4px;accent-color:var(--teal)}
+  li b{display:block;font-size:22px}
+  li span{color:var(--muted)}
+  .term{background:#fdf0cf;border-radius:6px;padding:0 .25em;color:var(--ink);font-weight:600}
+  .note{background:#fff;border:2px dashed var(--muted);border-radius:14px;padding:14px 18px;margin-top:28px}
+  #count{font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <h1>Tips and tricks for the educators</h1>
+  <p>Short habits that make AI work better for science teaching. <a href="../folder/" style="color:#fff;font-weight:700">Set up your project folder</a></p>
+</header>
+<main>
+  <h2>Working with an AI chat</h2>
+  <ol>
+    <li><div><b>New topic, new chat.</b><span>A long chat fills the <span class="term">context window</span> and uses up the <span class="term">usage limit</span> faster. Paste the page into the new chat.</span></div></li>
+    <li><div><b>One change per prompt.</b><span>Then you can see what each change did. Keep a copy of every version that works, so you can always go back.</span></div></li>
+    <li><div><b>Say who it is for and what they do.</b><span>Say who the page is for, what it shows, what learners do and what they see. "A page about gravity" gets a general page; "12-year-olds drop a hammer and a feather" gets a lesson.</span></div></li>
+    <li><div><b>Describe what you see, not the code.</b><span>"The feather falls through the floor" works better than guessing at a technical fix.</span></div></li>
+    <li><div><b>Write down your <span class="term">standing instructions</span> once.</b><span>For example "simple English, label every unit". Put them in the app's settings, or in an AGENTS.md file in your project folder.</span></div></li>
+    <li><div><b>Keep a prompt notebook.</b><span>Save the prompts that worked and reuse them next time.</span></div></li>
+  </ol>
+
+  <h2>Checking the science</h2>
+  <ol>
+    <li><div><b>Give it the source. Do not ask it for one.</b><span>Paste your textbook page into the <span class="term">context</span>, then find every number on the page in that source. An AI can <span class="term">hallucinate</span> references.</span></div></li>
+    <li><div><b>Ask "what did you assume?"</b><span>After it builds a page, it often names rules or values you never gave it. Those are what you check.</span></div></li>
+    <li><div><b>Check Arabic yourself.</b><span>Nobody has tested how well these tools write science Arabic. Read every term before you share the page.</span></div></li>
+  </ol>
+
+  <h2>In the classroom</h2>
+  <ol>
+    <li><div><b>Ask for one file that works offline.</b><span>"One index.html, no internet links." It then opens by double-click even when the classroom Wi-Fi is down.</span></div></li>
+    <li><div><b>Test on the real screen.</b><span>Try the page on the projector or a student tablet before the lesson.</span></div></li>
+    <li><div><b>Never use real student data.</b><span>Use made-up names and numbers in every <span class="term">prompt</span>, and keep the project folder free of student records.</span></div></li>
+  </ol>
+
+  <h2>With an AI agent in a project folder</h2>
+  <ol>
+    <li><div><b>One new folder for each project.</b><span>Copy the whole folder before you ask for a big change.</span></div></li>
+    <li><div><b>Stay in the default mode.</b><span>Read every <span class="term">permission prompt</span> before you press Allow. Never switch to "Full access" or "Turbo".</span></div></li>
+  </ol>
+
+  <p class="note">Never put personal data in a prompt or a project folder: no student names, phone numbers, civil ID numbers or passwords.</p>
+</main>
+
+</body>
+</html>
