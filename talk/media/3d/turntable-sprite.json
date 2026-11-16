@@ -1,0 +1,13 @@
+{
+  "image": "turntable-sprite.jpg",
+  "frames": 36,
+  "columns": 6,
+  "rows": 6,
+  "frameWidth": 960,
+  "frameHeight": 540,
+  "sheetWidth": 5760,
+  "sheetHeight": 3240,
+  "degreesPerFrame": 10,
+  "order": "left to right, then top to bottom; frame 1 (top left) looks at the scene from the front; each next frame moves the camera 10 degrees counter-clockwise, seen from above",
+  "madeWith": "Blender 4.2.2 LTS, Cycles; see made-with.md"
+}

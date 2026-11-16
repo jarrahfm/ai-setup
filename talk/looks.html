@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Make science visible: four looks for the example page</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --ink:#10212e;--navy:#0b3d5c;--teal:#0a6e8a;--gold:#f2a516;--coral:#ef6b57;--sea:#19b3a6;--sky:#5bc0eb;--sand:#f6e7c8;
+  --font:"Segoe UI",system-ui,-apple-system,"Noto Sans",Tahoma,Arial,sans-serif;
+  --serif:Georgia,"Times New Roman",serif;
+  --hand:"Segoe Print","Bradley Hand","Comic Sans MS",cursive;
+  --ease:cubic-bezier(.2,.8,.2,1);--glide:cubic-bezier(.65,0,.25,1);
+  --strip:44px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:var(--font)}
+#viewport{position:fixed;left:0;right:0;top:0;bottom:var(--strip);overflow:clip}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:clip;background:#000}
+#defs{position:absolute;width:0;height:0;overflow:hidden}
+.dir{position:absolute;inset:0;display:none;overflow:clip}
+.dir .a{text-wrap:balance}
+.dir.on{display:block}
+p,h1,h2{margin:0;font-weight:inherit}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;margin:0}
+.a{cursor:text;outline:none}
+.instant,.instant *{transition:none!important}
+.ok{display:none;width:.9em;height:.9em;vertical-align:-.1em;margin-left:.3em}
+.done .ok{display:inline-block}
+svg{display:block}
+
+/* ---------- switcher strip (outside the stage) ---------- */
+#strip{position:fixed;left:0;right:0;bottom:0;height:var(--strip);display:flex;align-items:center;justify-content:center;gap:28px;
+  background:#0d1319;border-top:1px solid #222c36;font:600 15px/1 var(--font);color:#c9d3dc;z-index:10}
+#strip .grp{display:flex;gap:6px}
+#strip button{font:inherit;color:#c9d3dc;background:transparent;border:1px solid #33414e;border-radius:999px;padding:6px 14px}
+#strip button[aria-pressed=true]{background:#f2a516;border-color:#f2a516;color:#10212e}
+#strip button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* =====================================================================
+   1 · ONE CONTINUOUS SCENE
+   ===================================================================== */
+.d1{background:radial-gradient(1500px 1000px at 28% 18%,#0d2234 0%,#07111c 50%,#03070c 100%);color:#fff}
+.d1 .l-bg,.d1 .l-glow,.d1 .l-fg{pointer-events:none}
+.d1 .layer{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;transition:transform 1.2s var(--glide);will-change:transform}
+.d1 .stars{position:absolute;left:-500px;top:-400px;width:2920px;height:1880px}
+.d1 .tw{animation:tw 3.6s ease-in-out infinite alternate}
+.d1 .tw:nth-child(3n){animation-duration:5.2s}
+@keyframes tw{to{opacity:.12}}
+.d1 .g1{position:absolute;left:-700px;top:-700px;width:2000px;height:1700px;border-radius:50%;background:radial-gradient(closest-side,rgba(10,110,138,.34),rgba(10,110,138,0))}
+.d1 .g2{position:absolute;left:1500px;top:900px;width:1800px;height:1200px;border-radius:50%;background:radial-gradient(closest-side,rgba(242,165,22,.10),rgba(242,165,22,0))}
+.d1 .beam{position:absolute;left:180px;top:-260px;width:520px;height:1300px;transform:rotate(-24deg);transform-origin:50% 0;
+  background:linear-gradient(180deg,rgba(190,230,255,.11),rgba(190,230,255,0) 85%);filter:blur(40px)}
+.d1 .bk{position:absolute;border-radius:50%;background:rgba(200,230,255,.07);filter:blur(7px)}
+.d1 .scene{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible}
+.d1 .earthOnly,.d1 .moonOnly{transition:opacity 1s ease}
+.d1[data-place=moon] .earthOnly,.d1[data-place=earth] .moonOnly{opacity:0}
+.d1 .motes{animation:drift 9s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(46px,-14px)}}
+.d1 .lead{fill:none;stroke:#fff;stroke-opacity:.32;stroke-width:2}
+.d1 .ldot{fill:#fff;fill-opacity:.7}
+.d1[data-guess="0"] .lg0,.d1[data-guess="1"] .lg1,.d1[data-guess="2"] .lg2{stroke:#f2a516;stroke-opacity:1;stroke-width:3;fill:#f2a516;fill-opacity:1}
+.d1 .lead.lg0,.d1 .lead.lg1,.d1 .lead.lg2{fill:none}
+.d1 .leads,.d1 .sky1{transition:opacity .4s ease}
+.d1.at2 .leads,.d1.at2 .sky1{opacity:0}
+.d1 .ui{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.d1 .ui1{transition:opacity .45s ease,visibility 0s}
+.d1.at2 .ui1{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.d1 .ui2{transform:translate(274.44px,-762.22px) scale(2.22222);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s linear .3s}
+.d1.at2 .ui2{opacity:1;visibility:visible;transition:opacity .7s var(--ease) .55s,visibility 0s}
+.d1 :focus-visible{outline:4px solid #f2a516;outline-offset:6px}
+.d1 .q1{position:absolute;left:120px;top:72px;width:1500px;font-size:64px;font-weight:600;line-height:1.18;letter-spacing:-.012em;text-wrap:balance}
+.d1 .gw{position:absolute;top:944px;width:0;display:flex;justify-content:center}
+.d1 .opt{white-space:nowrap;font-size:40px;font-weight:600;color:#fff;background:rgba(5,11,19,.62);border:2px solid rgba(255,255,255,.42);border-radius:999px;padding:8px 30px 10px;transition:background .25s,border-color .25s,color .25s}
+.d1 .opt:hover{border-color:#fff}
+.d1 .opt[aria-pressed=true]{background:#f2a516;border-color:#f2a516;color:#10212e}
+.d1 .ctl{position:absolute;left:1500px;top:476px;width:310px;display:flex;flex-direction:column}
+.d1 .sw{display:flex;flex-direction:column;gap:6px}
+.d1 .sw button{display:flex;align-items:center;gap:18px;font-size:40px;font-weight:600;color:rgba(255,255,255,.78);background:transparent;border:0;border-radius:16px;padding:8px 14px;text-align:left;white-space:nowrap}
+.d1 .sw button::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.6);transition:background .25s,border-color .25s}
+.d1 .sw button[aria-pressed=true]{color:#fff}
+.d1 .sw button[aria-pressed=true]::before{background:#f2a516;border-color:#f2a516;box-shadow:0 0 18px rgba(242,165,22,.7)}
+.d1 .drop{margin-top:34px;align-self:flex-start;font-size:44px;font-weight:700;background:#f2a516;color:#10212e;border:0;border-radius:999px;padding:12px 56px 14px;box-shadow:0 0 40px rgba(242,165,22,.28)}
+.d1 .drop:active{transform:scale(.98)}
+.d1 .hud{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none}
+.d1 .hud path{fill:none;stroke:#fff;stroke-opacity:.45;stroke-width:2}
+.d1 .hud .tomini{opacity:0;transition:opacity .5s ease .3s}
+.d1 .hud.sent .tomini{opacity:1}
+.d1 .t2{position:absolute;left:540px;top:52px;font-size:60px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.d1 .qa{position:absolute;left:540px;top:166px;width:1300px;display:grid;gap:16px}
+.d1 .row{display:grid;grid-template-columns:350px 1fr;gap:0 26px;align-items:start}
+.d1 .q{font-size:40px;line-height:1.25;color:#a7c5d8;padding-top:7px;white-space:nowrap}
+.d1 .a{font-size:40px;line-height:1.25;color:#fff;padding:7px 18px 9px;background:rgba(255,255,255,.05);border-bottom:3px solid var(--c);border-radius:10px 10px 2px 2px}
+.d1 .a:focus{background:rgba(255,255,255,.1)}
+.d1 .f-who{--c:#f2a516}.d1 .f-idea{--c:#5bc0eb}.d1 .f-do{--c:#2fd0c1}.d1 .f-see{--c:#ff8a75}
+.d1 .rc{position:absolute;left:540px;top:592px;width:940px;padding:26px 34px 30px;background:rgba(4,10,18,.72);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);border-radius:22px}
+.d1 .req{font-size:40px;line-height:1.3;color:#dbe6ee}
+.d1 .req .fill{color:var(--c);font-weight:600}
+.d1 .rb{display:flex;gap:20px;margin-top:22px}
+.d1 .rb button{font-size:40px;font-weight:600;border-radius:999px;padding:6px 40px 9px;white-space:nowrap}
+.d1 .copy{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.5)}
+.d1 .send{background:#f2a516;color:#10212e;border:2px solid #f2a516;font-weight:700!important}
+.d1 .mini{position:absolute;left:1520px;top:592px;width:340px;height:410px;opacity:0;transform:scale(.8);transform-origin:0 50%;transition:opacity .6s ease,transform .8s var(--ease)}
+.d1 .mini.on{opacity:1;transform:none}
+.d1 .msim{width:340px;height:410px}
+
+/* =====================================================================
+   2 · NIGHT LAB
+   ===================================================================== */
+.d2{background:#0b3d5c;color:#fff}
+.d2 .scr{position:absolute;inset:0;transition:opacity 1.1s ease,visibility 0s}
+.d2 .scr:not(.cur){opacity:0;visibility:hidden;transition:opacity 1.1s ease,visibility 0s linear 1.1s}
+.d2 .scene{position:absolute;inset:0;width:1920px;height:1080px}
+.d2 .earthOnly,.d2 .moonOnly{transition:opacity 1.3s ease}
+.d2[data-place=moon] .earthOnly,.d2[data-place=earth] .moonOnly{opacity:0}
+.d2 .motes{animation:drift2 11s ease-in-out infinite alternate}
+@keyframes drift2{to{transform:translate(-30px,24px)}}
+.d2 :focus-visible{outline:4px solid #fff;outline-offset:6px;box-shadow:0 0 0 12px rgba(242,165,22,.55)}
+.d2 .q1{position:absolute;left:140px;top:118px;width:960px;font-size:76px;font-weight:350;line-height:1.14;letter-spacing:-.015em;text-wrap:balance}
+.d2 .opts{position:absolute;left:140px;top:536px;display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.d2 .opt{font-size:44px;font-weight:400;color:#fff;background:rgba(255,255,255,.02);border:2px solid rgba(255,255,255,.5);border-radius:999px;padding:8px 40px 12px;white-space:nowrap;transition:background .3s,color .3s,border-color .3s}
+.d2 .opt:hover{border-color:#fff}
+.d2 .opt[aria-pressed=true]{background:#fff;color:#0b3d5c;border-color:#fff;font-weight:600}
+.d2 .ctl{position:absolute;left:1370px;top:936px;transform:translateX(-50%);display:flex;gap:36px;align-items:center}
+.d2 .sw{display:flex;gap:0;border:2px solid rgba(255,255,255,.45);border-radius:999px;padding:4px}
+.d2 .sw button{font-size:40px;font-weight:400;color:rgba(255,255,255,.85);background:transparent;border:0;border-radius:999px;padding:6px 30px 10px;white-space:nowrap;transition:background .4s,color .4s}
+.d2 .sw button[aria-pressed=true]{background:rgba(255,255,255,.92);color:#0b3d5c;font-weight:600}
+.d2 .drop{font-size:44px;font-weight:700;background:#f2a516;color:#10212e;border:0;border-radius:999px;padding:12px 60px 16px;box-shadow:0 10px 40px rgba(242,165,22,.25)}
+.d2 .s2bg{position:absolute;inset:0;background:radial-gradient(1100px 800px at 78% 78%,#155a80 0%,#0b3d5c 50%,#072b42 100%)}
+.d2 .t2{position:absolute;left:140px;top:84px;font-size:68px;font-weight:350;letter-spacing:-.015em;white-space:nowrap}
+.d2 .qa{position:absolute;left:140px;top:226px;width:1640px;display:grid;grid-template-columns:1fr 1fr;gap:40px 72px;align-items:start}
+.d2 .q{font-size:40px;color:rgba(255,255,255,.7);line-height:1.25}
+.d2 .a{font-size:44px;font-weight:600;line-height:1.24;color:#fff;padding:4px 0 10px;margin-top:6px;border-bottom:2px solid rgba(255,255,255,.28);transition:border-color .3s}
+.d2 .a:focus{border-bottom-color:#fff}
+.d2 .req{position:absolute;left:140px;top:636px;width:1040px;font-size:42px;font-weight:350;line-height:1.34;color:#e8f0f5}
+.d2 .req .fill{font-weight:600;color:#fff}
+.d2 .rb{position:absolute;left:140px;top:930px;display:flex;gap:24px}
+.d2 .rb button{font-size:40px;border-radius:999px;padding:8px 46px 12px;white-space:nowrap}
+.d2 .copy{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.55);font-weight:400}
+.d2 .send{background:#f2a516;color:#10212e;border:2px solid #f2a516;font-weight:700}
+.d2 .mini{position:absolute;left:1260px;top:626px;width:520px;height:390px;opacity:0;transform:scale(.96);transition:opacity 1.1s ease,transform 1.4s var(--ease)}
+.d2 .mini.on{opacity:1;transform:none}
+.d2 .msim{width:520px;height:390px}
+
+/* =====================================================================
+   3 · TEACHER'S NOTEBOOK
+   ===================================================================== */
+.d3{background:#3b3a36;perspective:2800px;color:#1f2d4d}
+.d3 .page{position:absolute;inset:0;transform-origin:50% 0;backface-visibility:hidden;
+  background-color:#fbf6ea;
+  background-image:
+    radial-gradient(1400px 900px at 50% 40%,rgba(255,255,255,.55),rgba(255,255,255,0)),
+    linear-gradient(90deg,transparent 178px,rgba(212,96,96,.5) 178px,rgba(212,96,96,.5) 181px,transparent 181px),
+    repeating-linear-gradient(180deg,transparent 0 70px,rgba(84,132,186,.24) 70px 72px);
+  box-shadow:inset 0 0 120px rgba(120,90,40,.12)}
+.d3 .grain{position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:multiply}
+.d3 .p1{z-index:2;transition:transform 1.05s cubic-bezier(.55,0,.35,1)}
+.d3.at2 .p1{transform:rotateX(112deg)}
+.d3 .p2{z-index:1}
+.d3 .rings{position:absolute;left:0;top:0;width:1920px;height:48px;pointer-events:none}
+.d3 :focus-visible{outline:4px solid #1d3f9a;outline-offset:6px;border-radius:10px}
+.d3 .q1{position:absolute;left:232px;top:88px;width:1560px;font-family:var(--serif);font-size:58px;line-height:72px;color:#1f2d4d;text-wrap:balance}
+.d3 .scene{position:absolute;left:0;top:0;width:1920px;height:1080px}
+.d3 .earthOnly,.d3 .moonOnly{transition:opacity .7s ease}
+.d3[data-place=moon] .earthOnly,.d3[data-place=earth] .moonOnly{opacity:0}
+.d3 .ink:not([fill]){fill:none}
+.d3 .ink{stroke:#1f2d4d;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.d3 .opts{position:absolute;left:1240px;top:318px;display:flex;flex-direction:column;align-items:flex-start;gap:26px}
+.d3 .opt,.d3 .sw button{position:relative;font-family:var(--hand);font-size:44px;line-height:1.3;color:#1f2d4d;background:none;border:0;padding:6px 26px 10px;white-space:nowrap}
+.d3 .circ{position:absolute;left:-14px;top:-12px;width:calc(100% + 28px);height:calc(100% + 24px);overflow:visible;pointer-events:none}
+.d3 .circ path{fill:none;stroke:#c4452d;stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .55s ease}
+.d3 [aria-pressed=true] > .circ path{stroke-dashoffset:0}
+.d3 .sw{position:absolute;left:1240px;top:700px;display:flex;gap:18px}
+.d3 .drop{position:absolute;left:1266px;top:840px;font-family:var(--hand);font-size:46px;font-weight:700;color:#fbf6ea;background:#1f2d4d;border:0;
+  border-radius:255px 18px 225px 18px/18px 225px 18px 255px;padding:8px 64px 14px;transform:rotate(-1.5deg);box-shadow:3px 4px 0 rgba(31,45,77,.25)}
+.d3 .drop:active{transform:rotate(-1.5deg) translateY(2px)}
+.d3 .t2{position:absolute;left:232px;top:88px;font-family:var(--serif);font-size:58px;line-height:72px;white-space:nowrap}
+.d3 .qa{position:absolute;left:232px;top:232px;width:820px}
+.d3 .q{font-size:40px;line-height:72px;height:72px;color:#4a5670;font-weight:600}
+.d3 .a{font-family:var(--hand);font-size:42px;line-height:72px;color:#1d3f9a;padding:0 6px;border-radius:6px}
+.d3 .a:focus{background:rgba(255,226,120,.35)}
+.d3 .card{position:absolute;left:1110px;top:188px;width:700px;padding:44px 44px 40px;transform:rotate(-1.4deg);
+  background-color:#fffefa;background-image:linear-gradient(180deg,transparent 30px,rgba(212,96,96,.55) 30px,rgba(212,96,96,.55) 32px,transparent 32px),repeating-linear-gradient(180deg,transparent 0 86px,rgba(84,132,186,.18) 86px 88px);
+  box-shadow:0 2px 0 rgba(0,0,0,.04),0 18px 36px rgba(60,45,20,.18);border-radius:4px}
+.d3 .tape{position:absolute;left:290px;top:-22px;width:150px;height:46px;background:rgba(236,226,196,.82);transform:rotate(3deg);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.d3 .req{font-family:var(--serif);font-size:40px;line-height:58px;color:#1f2d4d}
+.d3 .req .fill{font-family:var(--hand);color:#1d3f9a;font-size:40px}
+.d3 .rb{position:absolute;left:1116px;top:760px;display:flex;gap:28px}
+.d3 .rb button{font-family:var(--hand);font-size:42px;padding:6px 40px 12px;border-radius:255px 18px 225px 18px/18px 225px 18px 255px;white-space:nowrap}
+.d3 .copy{background:transparent;color:#1f2d4d;border:3px solid #1f2d4d}
+.d3 .send{background:#1f2d4d;color:#fbf6ea;border:3px solid #1f2d4d;font-weight:700}
+.d3 .mini{position:absolute;left:1566px;top:716px;width:330px;height:248px;transform:rotate(3deg) translateY(30px) scale(.9);opacity:0;transition:opacity .5s ease,transform .7s var(--ease)}
+.d3 .mini.on{opacity:1;transform:rotate(3deg)}
+.d3 .note{position:absolute;inset:0;background:linear-gradient(170deg,#fff4b0,#ffe98a);box-shadow:0 14px 28px rgba(60,45,20,.22)}
+.d3 .msim{position:absolute;inset:0;width:330px;height:248px}
+
+/* =====================================================================
+   4 · THE KIT'S LOOK, POLISHED
+   ===================================================================== */
+.d4{background:#f4f7fb;color:#10212e}
+.d4 .scr{position:absolute;inset:0;transition:opacity .3s var(--ease),transform .3s var(--ease),visibility 0s}
+.d4 .scr:not(.cur){opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.d4 :focus-visible{outline:4px solid #0b3d5c;outline-offset:4px;box-shadow:0 0 0 12px #f2a516!important}
+.d4 .hero{position:absolute;left:0;top:0;width:1920px;color:#fff;background:linear-gradient(135deg,#0b3d5c 0%,#0a6e8a 55%,#0e766e 100%);overflow:hidden}
+.d4 .hero::before{content:"";position:absolute;inset:0;opacity:.13;background-image:radial-gradient(circle at 1px 1px,#fff 1.5px,transparent 2px);background-size:32px 32px}
+.d4 .hero > *{position:relative}
+.d4 .s1 .hero{height:248px}
+.d4 .q1{position:absolute;left:120px;top:50px;width:1680px;font-size:58px;font-weight:700;line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
+.d4 .simcard{position:absolute;left:120px;top:288px;width:1120px;height:728px;background:#fff;border:1px solid #e2e8f0;border-radius:28px;padding:16px;box-shadow:0 14px 34px rgba(16,33,46,.12)}
+.d4 .scene{width:1088px;height:694px}
+.d4 .earthOnly,.d4 .moonOnly{transition:opacity .25s ease}
+.d4[data-place=moon] .earthOnly,.d4[data-place=earth] .moonOnly{opacity:0}
+.d4 .side{position:absolute;left:1288px;top:288px;width:512px;height:728px;display:flex;flex-direction:column}
+.d4 .opts{display:flex;flex-direction:column;gap:24px}
+.d4 .opt{min-height:116px}
+.d4 .opt{display:flex;align-items:center;gap:22px;font-size:40px;font-weight:650;color:#10212e;background:#fff;border:3px solid #e2e8f0;border-radius:18px;padding:14px 26px 16px;text-align:left;white-space:nowrap;
+  box-shadow:0 1px 2px rgba(16,33,46,.06),0 6px 18px rgba(16,33,46,.08);transition:border-color .2s var(--ease),background .2s var(--ease),transform .18s var(--ease)}
+.d4 .opt:hover{transform:translateY(-1px)}
+.d4 .opt::before{content:"";flex:none;width:30px;height:30px;border-radius:50%;border:3px solid #a9b6c3;background:#fff;transition:all .2s var(--ease)}
+.d4 .opt[aria-pressed=true]{border-color:#f2a516;background:#fff8e8}
+.d4 .opt[aria-pressed=true]::before{border-color:#f2a516;background:#f2a516;box-shadow:inset 0 0 0 5px #fff}
+.d4 .sw{display:flex;margin-top:auto;background:#e7edf3;border-radius:999px;padding:6px}
+.d4 .sw button{flex:1 1 auto;font-size:40px;font-weight:650;color:#3d4c5c;background:transparent;border:0;border-radius:999px;padding:10px 20px 14px;white-space:nowrap;transition:background .2s,color .2s,box-shadow .2s}
+.d4 .sw button[aria-pressed=true]{background:#fff;color:#0b3d5c;box-shadow:0 2px 8px rgba(16,33,46,.14)}
+.d4 .drop{margin-top:24px;font-size:48px;font-weight:700;color:#fff;border:0;border-radius:999px;padding:18px 0 22px;background:linear-gradient(135deg,#0b3d5c 0%,#0a6e8a 55%,#0e766e 100%);box-shadow:0 8px 22px rgba(10,110,138,.32);transition:transform .18s var(--ease),box-shadow .18s}
+.d4 .drop:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(10,110,138,.36)}
+.d4 .drop:active{transform:translateY(1px) scale(.99)}
+.d4 .s2 .hero{height:168px}
+.d4 .t2{position:absolute;left:120px;top:46px;font-size:58px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+.d4 .qa{position:absolute;left:120px;top:200px;width:1680px;display:grid;grid-template-columns:1fr 1fr;gap:24px 32px}
+.d4 .row{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:16px 28px 20px;box-shadow:0 1px 2px rgba(16,33,46,.06),0 6px 18px rgba(16,33,46,.08)}
+.d4 .q{display:flex;align-items:center;gap:18px;font-size:40px;font-weight:700;color:#0b3d5c;line-height:1.2}
+.d4 .chip{flex:none;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#f6e7c8}
+.d4 .chip svg{width:32px;height:32px;fill:none;stroke:#0b3d5c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.d4 .a{margin-top:10px;font-size:40px;line-height:1.25;color:#10212e;background:#f4f7fb;border:2px solid #e2e8f0;border-radius:12px;padding:8px 18px 10px;transition:border-color .2s,background .2s}
+.d4 .a:focus{background:#fff;border-color:#0a6e8a}
+.d4 .rc{position:absolute;left:120px;top:640px;width:1152px;height:376px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:30px 36px 28px;box-shadow:0 14px 34px rgba(16,33,46,.12);overflow:hidden;display:flex;flex-direction:column}
+.d4 .rc::before{content:"";position:absolute;left:0;top:0;right:0;height:8px;background:linear-gradient(135deg,#f2a516 0%,#ef6b57 100%)}
+.d4 .req{font-size:40px;line-height:1.3;color:#10212e}
+.d4 .req .fill{background:#f6e7c8;border-radius:8px;padding:0 3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.d4 .rb{display:flex;gap:20px;margin-top:auto}
+.d4 .rb button{font-size:40px;font-weight:650;border-radius:999px;padding:8px 44px 12px;white-space:nowrap}
+.d4 .copy{background:#fff;color:#0b3d5c;border:3px solid #0b3d5c}
+.d4 .send{color:#fff;border:3px solid transparent;background:linear-gradient(135deg,#0b3d5c 0%,#0a6e8a 55%,#0e766e 100%);box-shadow:0 4px 12px rgba(10,110,138,.28)}
+.d4 .mini{position:absolute;left:1304px;top:640px;width:496px;height:376px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:16px;box-shadow:0 14px 34px rgba(16,33,46,.12);
+  opacity:0;transform:translateY(14px);transition:opacity .3s var(--ease),transform .35s var(--ease)}
+.d4 .mini.on{opacity:1;transform:none}
+.d4 .msim{width:462px;height:342px}
+
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg id="defs" aria-hidden="true" focusable="false"><defs id="gdefs"></defs></svg>
+<div id="viewport"><div id="stage"></div></div>
+<nav id="strip" aria-label="Style frames">
+  <div class="grp" id="dirBtns"></div>
+  <div class="grp" id="scrBtns"></div>
+</nav>
+<script>
+"use strict";
+/* ---------- text: the only words on the stage ---------- */
+const TXT = {
+  q: "If you drop a hammer and a feather at the same time, which one hits the ground first?",
+  guesses: ["The hammer", "The feather", "Both together"],
+  earth: "On Earth", moon: "On the Moon", drop: "Drop",
+  title: "How do I ask the AI for a simulation?",
+  qa: [
+    ["who", "Who will use it?", "12-year-olds"],
+    ["idea", "What is the idea?", "why a hammer and a feather land together on the Moon"],
+    ["do", "What can they do?", "drop both on Earth and on the Moon"],
+    ["see", "What will they see?", "both falling side by side"]
+  ],
+  copy: "Copy", send: "Send"
+};
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const NS = "http://www.w3.org/2000/svg";
+function sv(tag, a, p) { const e = document.createElementNS(NS, tag); if (a) for (const k in a) e.setAttribute(k, a[k]); if (p) p.append(e); return e; }
+function h(tag, a, ...kids) {
+  const e = document.createElement(tag);
+  if (a) for (const k in a) { const v = a[k]; if (v == null || v === false) continue; if (k === "class") e.className = v; else e.setAttribute(k, v === true ? "" : v); }
+  for (const k of kids.flat()) if (k != null) e.append(k instanceof Node ? k : document.createTextNode(String(k)));
+  return e;
+}
+function rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+let gid = 0;
+const uid = p => p + (++gid);
+function grad(type, attrs, stops, defs = GDEFS) {
+  const g = sv(type, attrs, defs);
+  stops.forEach(([o, c, op = 1]) => sv("stop", { offset: o, "stop-color": c, "stop-opacity": op }, g));
+  return g;
+}
+const GDEFS = document.getElementById("gdefs");
+
+/* ---------- physics (from hooks-v2/proto.html) ---------- */
+const P = { h: 1.6, g: { earth: 9.80665, moon: 1.624 }, vt: 0.5, swayM: 0.15, swayS: 1.3 };   // NASA heights/gravity; the feather's drift in air is illustrative
+const kAir = P.g.earth / P.vt;
+const dAir = t => P.vt * t - (P.vt / kAir) * (1 - Math.exp(-kAir * t));
+const inAir = (o, p) => o === "feather" && p === "earth";
+const TLC = {};
+function tLand(o, p) {
+  const key = o + p; if (TLC[key]) return TLC[key];
+  if (!inAir(o, p)) return (TLC[key] = Math.sqrt(2 * P.h / P.g[p]));
+  let lo = 0, hi = 60; for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (dAir(m) < P.h) lo = m; else hi = m; }
+  return (TLC[key] = hi);
+}
+const fallen = (o, p, t) => t <= 0 ? 0 : Math.min(P.h, inAir(o, p) ? dAir(t) : 0.5 * P.g[p] * t * t);
+function sway(o, p, t) {
+  if (!inAir(o, p) || t <= 0) return { dx: 0, rot: 0 };
+  const tt = Math.min(t, tLand(o, p)), w = 2 * Math.PI / P.swayS, a = Math.min(1, tt / 0.6);
+  return { dx: P.swayM * a * Math.sin(w * tt), rot: 24 * a * Math.cos(w * tt) };
+}
+const tEnd = p => Math.max(tLand("hammer", p), tLand("feather", p));
+
+/* Actors: the hammer, the feather, their trails and (optionally) shadows, drawn into an SVG group. */
+function Actors(parent, o) {
+  const OBJ = ["hammer", "feather"];
+  const shG = o.shadow ? sv("g", null, parent) : null;
+  const gG = sv("g", null, parent);
+  const ghosts = {}, objs = {}, shadows = {};
+  for (const ob of OBJ) {
+    if (shG) shadows[ob] = sv("ellipse", { cx: o.lanes[ob], cy: o.ground + (o.shadow.dy || 0), rx: o.shadow.rx, ry: o.shadow.ry, fill: o.shadow.fill, filter: o.shadow.filter || null }, shG);
+    const n = Math.ceil(Math.max(tLand(ob, "earth"), tLand(ob, "moon")) / o.dt) + 1;
+    ghosts[ob] = Array.from({ length: n }, () => sv("use", { href: "#" + (o.ghostSym || o.sym)[ob], visibility: "hidden", opacity: o.ghostOp }, gG));
+  }
+  const objG = sv("g", o.objAttrs || null, parent);
+  for (const ob of OBJ) objs[ob] = sv("use", { href: "#" + o.sym[ob] }, objG);
+  const at = (ob, p, t) => { const s = sway(ob, p, t); return { x: o.lanes[ob] + s.dx * o.pxm, y: o.top + fallen(ob, p, t) * o.pxm, rot: s.rot }; };
+  const tf = q => `translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) scale(${o.sc})` + (q.rot ? ` rotate(${q.rot.toFixed(1)} 0 -68)` : "");
+  return {
+    render(p, t) {
+      const out = {};
+      for (const ob of OBJ) {
+        const q = at(ob, p, t); out[ob] = q;
+        objs[ob].setAttribute("transform", tf(q));
+        const tl = tLand(ob, p), lim = Math.min(t, tl) + 1e-9;
+        ghosts[ob].forEach((g, i) => {
+          const tk = (i + 1) * o.dt, vis = tk <= lim;
+          g.setAttribute("visibility", vis ? "visible" : "hidden");
+          if (vis) {
+            g.setAttribute("transform", tf(at(ob, p, tk)));
+            if (o.ghostFade) g.setAttribute("opacity", (o.ghostOp * (0.25 + 0.75 * tk / Math.max(lim, 1e-6))).toFixed(3));
+          }
+        });
+        if (shG) {
+          const k = Math.max(0, Math.min(1, (q.y - o.top) / (o.ground - o.top)));
+          shadows[ob].setAttribute("cx", q.x.toFixed(1));
+          shadows[ob].setAttribute("opacity", (o.shadow.op * (0.25 + 0.75 * k)).toFixed(3));
+          shadows[ob].setAttribute("rx", (o.shadow.rx * (1.5 - 0.5 * k)).toFixed(1));
+        }
+      }
+      return out;
+    }
+  };
+}
+
+/* Dropper: one drop at a time, in one place. */
+function Dropper(render, hold = 0.3) {
+  let place = "earth", t = -hold, raf = 0, last = 0;
+  const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
+  function frame(now) {
+    t += Math.min(0.05, (now - last) / 1000); last = now;
+    if (t >= tEnd(place)) { t = tEnd(place); raf = 0; render(place, t); return; }
+    render(place, t); raf = requestAnimationFrame(frame);
+  }
+  render(place, t);
+  return {
+    get place() { return place; },
+    setPlace(p) { stop(); place = p; t = -hold; render(place, t); },
+    drop() { stop(); if (reduced()) { t = tEnd(place); render(place, t); return; } t = -hold; render(place, t); last = performance.now(); raf = requestAnimationFrame(frame); },
+    stop
+  };
+}
+/* MiniLoop: the small Earth-and-Moon pair on screen 2, dropping again and again once sent. */
+function MiniLoop(render) {
+  let t = -0.6, raf = 0, last = 0, on = false;
+  const period = tEnd("earth") + 1.8;
+  function frame(now) { t += Math.min(0.05, (now - last) / 1000); last = now; if (t > period) t = -0.7; render(t); raf = requestAnimationFrame(frame); }
+  const pause = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
+  render(-1);
+  return {
+    start() { on = true; pause(); if (reduced()) { render(period); return; } t = -0.6; render(t); last = performance.now(); raf = requestAnimationFrame(frame); },
+    pause,
+    resume() { if (on && !raf && !reduced()) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+  };
+}
+
+/* ---------- shared UI builders ---------- */
+function guesses(cls, deco) {
+  const g = h("div", { class: cls, role: "group", "aria-label": "Your guess" });
+  const bs = TXT.guesses.map((txt, i) => {
+    const b = h("button", { type: "button", class: "opt", "aria-pressed": "false" }, h("span", null, txt));
+    if (deco) deco(b);
+    b.addEventListener("click", () => {
+      const on = b.getAttribute("aria-pressed") !== "true";
+      bs.forEach(x => x.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", String(on));
+      g.dataset.guess = on ? i : "";
+      g.dispatchEvent(new Event("guess"));
+    });
+    return b;
+  });
+  g.append(...bs); g.buttons = bs;
+  return g;
+}
+function placeSwitch(cls, onPlace, deco) {
+  const g = h("div", { class: cls, role: "group", "aria-label": "Where" });
+  const bs = [["earth", TXT.earth], ["moon", TXT.moon]].map(([p, txt]) => {
+    const b = h("button", { type: "button", "aria-pressed": String(p === "earth"), "data-place": p }, h("span", null, txt));
+    if (deco) deco(b);
+    b.addEventListener("click", () => { bs.forEach(x => x.setAttribute("aria-pressed", String(x === b))); onPlace(p); });
+    return b;
+  });
+  g.append(...bs);
+  return g;
+}
+function dropBtn(cls, onDrop) { const b = h("button", { type: "button", class: cls }, TXT.drop); b.addEventListener("click", onDrop); return b; }
+function checkSvg() { const s = sv("svg", { class: "ok", viewBox: "0 0 24 24", "aria-hidden": "true" }); sv("path", { d: "M5 12.5l4.5 4.5L19 7", fill: "none", stroke: "currentColor", "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round" }, s); return s; }
+async function copyText(txt) {
+  try { await navigator.clipboard.writeText(txt); return true; }
+  catch (e) {
+    const ta = h("textarea", { style: "position:fixed;left:-9999px;opacity:0" }); ta.value = txt; document.body.append(ta); ta.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch (_) { ok = false; }
+    ta.remove(); return ok;
+  }
+}
+function setEditable(el) { try { el.contentEditable = "plaintext-only"; } catch (e) { el.contentEditable = "true"; } if (el.contentEditable !== "plaintext-only") el.contentEditable = "true"; }
+const ICONS = {
+  who: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4.5 4.5-6.5 8-6.5s6.5 2 8 6.5"/>',
+  idea: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
+  do: '<path d="M6 3l12 7-5.5 1.5L15 18l-2.5 1.2-2.6-6.3L6 16z"/>',
+  see: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'
+};
+function ask(prefix, onSend, opts = {}) {
+  const spans = {};
+  const req = h("p", { class: "req" });
+  ["Make a web page for ", 0, " that shows ", 1, ". Let them ", 2, ". Show ", 3, ". Ask them to guess first."].forEach(x => {
+    if (typeof x === "number") { const k = TXT.qa[x][0]; const s = h("span", { class: "fill f-" + k }); spans[k] = s; req.append(s); }
+    else req.append(document.createTextNode(x));
+  });
+  const qa = h("div", { class: "qa" });
+  TXT.qa.forEach(([k, q, a]) => {
+    const id = `${prefix}-q-${k}`;
+    const box = h("div", { class: "a f-" + k, role: "textbox", "aria-labelledby": id, spellcheck: "false" }, a);
+    setEditable(box);
+    box.addEventListener("input", () => { spans[k].textContent = box.textContent.replace(/\s+/g, " ").trim(); });
+    box.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); box.blur(); } });
+    spans[k].textContent = a;
+    const qEl = h("div", { class: "q", id });
+    if (opts.icons) { const c = h("span", { class: "chip", "aria-hidden": "true" }); c.innerHTML = `<svg viewBox="0 0 24 24">${ICONS[k]}</svg>`; qEl.append(c); }
+    qEl.append(h("span", null, q));
+    qa.append(h("div", { class: "row r-" + k }, qEl, box));
+  });
+  const copy = h("button", { type: "button", class: "copy" }, h("span", null, TXT.copy), checkSvg());
+  const send = h("button", { type: "button", class: "send" }, TXT.send);
+  copy.addEventListener("click", async () => {
+    const ok = await copyText(req.textContent);
+    if (!ok) return;
+    copy.classList.add("done"); clearTimeout(copy._t); copy._t = setTimeout(() => copy.classList.remove("done"), 1600);
+  });
+  send.addEventListener("click", onSend);
+  return { qa, req, rb: h("div", { class: "rb" }, copy, send), copy, send };
+}
+
+/* ---------- object drawings, one pair per direction ---------- */
+const H_HANDLE = "M-8 -124H8L9 -7Q9 0 2 0H-2Q-9 0-9 -7Z";
+const H_GRIP = "M-9.5 -52H9.5V-7Q9.5 0 2 0H-2Q-9.5 0-9.5 -7Z";
+const H_HEAD = "M-58 -146Q-58 -152-52 -152H-22Q-20 -158-13 -158H11Q18 -158 20 -152Q44 -150 60 -124Q40 -136 20 -134V-124Q20 -118 14 -118H-14Q-20 -118-22 -124H-52Q-58 -124-58 -130Z";
+function hammer(g, o) {
+  const st = o.stroke ? { stroke: o.stroke, "stroke-width": o.sw, "stroke-linejoin": "round" } : {};
+  sv("path", Object.assign({ d: H_HANDLE, fill: o.handle }, st), g);
+  if (o.grip) sv("path", Object.assign({ d: H_GRIP, fill: o.grip }, st), g);
+  sv("path", Object.assign({ d: H_HEAD, fill: o.head }, st), g);
+  if (o.hl) sv("path", { d: "M-52 -146H-26M-12 -152H10", stroke: o.hl, "stroke-opacity": .85, "stroke-width": 3, "stroke-linecap": "round" }, g);
+  if (o.hatch) sv("path", { d: "M-50 -128L-42 -148M-40 -128L-32 -148M-30 -128L-24 -142M-6 -122L2 -150", stroke: o.stroke, "stroke-opacity": .45, "stroke-width": 2, "stroke-linecap": "round" }, g);
+}
+function buildSymbols() {
+  const D = GDEFS;
+  // 1 · continuous scene: lit metal and a pale feather
+  grad("linearGradient", { id: "d1gH", x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, "#ffe2a3"], [.45, "#f2a516"], [1, "#a86a00"]]);
+  grad("linearGradient", { id: "d1gS", x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#f6f9fb"], [.5, "#aebdca"], [1, "#5c6e7f"]]);
+  grad("linearGradient", { id: "d1gF", x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, "#ffffff"], [1, "#cfe1ec"]]);
+  let g = sv("g", { id: "d1H" }, D);
+  hammer(g, { handle: "url(#d1gH)", grip: "#7c5108", head: "url(#d1gS)", hl: "#fff" });
+  g = sv("g", { id: "d1F" }, D);
+  sv("path", { d: "M0 -6C34 -34 42 -100 6 -140C-36 -106 -40 -40 0 -6Z", fill: "url(#d1gF)" }, g);
+  sv("path", { d: "M0 8C1 -40 3 -92 6 -140", stroke: "#86a2b8", "stroke-width": 3, fill: "none", "stroke-linecap": "round" }, g);
+  sv("path", { d: "M1 -34L-20 -52M2 -60L-24 -80M3 -86L-20 -106M2 -44L22 -62M3 -70L26 -90M5 -96L20 -114", stroke: "#a9bfd0", "stroke-width": 2, fill: "none", "stroke-linecap": "round" }, g);
+  const f1 = sv("filter", { id: "glow1", x: "-60%", y: "-40%", width: "220%", height: "180%" }, D);
+  sv("feGaussianBlur", { in: "SourceGraphic", stdDeviation: 9, result: "b" }, f1);
+  sv("feColorMatrix", { in: "b", type: "matrix", values: "1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0", result: "c" }, f1);
+  const m1 = sv("feMerge", null, f1); sv("feMergeNode", { in: "c" }, m1); sv("feMergeNode", { in: "SourceGraphic" }, m1);
+
+  // 2 · night lab: pale, softly lit
+  grad("linearGradient", { id: "d2gH", x1: 0, y1: 0, x2: 1, y2: 0 }, [[0, "#fbf3e1"], [1, "#cdbb94"]]);
+  grad("linearGradient", { id: "d2gS", x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#ffffff"], [1, "#9fb2c2"]]);
+  g = sv("g", { id: "d2H" }, D);
+  hammer(g, { handle: "url(#d2gH)", grip: "#b7a37a", head: "url(#d2gS)", hl: "#fff" });
+  g = sv("g", { id: "d2F" }, D);
+  sv("path", { d: "M0 -6C34 -34 42 -100 6 -140C-36 -106 -40 -40 0 -6Z", fill: "#ffffff" }, g);
+  sv("path", { d: "M0 8C1 -40 3 -92 6 -140", stroke: "#b9cad7", "stroke-width": 3, fill: "none", "stroke-linecap": "round" }, g);
+  const f2 = sv("filter", { id: "glow2", x: "-80%", y: "-50%", width: "260%", height: "200%" }, D);
+  sv("feGaussianBlur", { in: "SourceGraphic", stdDeviation: 16, result: "b" }, f2);
+  sv("feColorMatrix", { in: "b", type: "matrix", values: "1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .45 0", result: "c" }, f2);
+  const m2 = sv("feMerge", null, f2); sv("feMergeNode", { in: "c" }, m2); sv("feMergeNode", { in: "SourceGraphic" }, m2);
+  const fb = sv("filter", { id: "soft", x: "-50%", y: "-50%", width: "200%", height: "200%" }, D);
+  sv("feGaussianBlur", { stdDeviation: 10 }, fb);
+  const fb2 = sv("filter", { id: "soft40", x: "-50%", y: "-50%", width: "200%", height: "200%" }, D);
+  sv("feGaussianBlur", { stdDeviation: 34 }, fb2);
+
+  // 3 · notebook: ink with a wash, plus pencil outlines for the trail
+  const fr = sv("filter", { id: "rough", x: "-10%", y: "-10%", width: "120%", height: "120%" }, D);
+  sv("feTurbulence", { type: "fractalNoise", baseFrequency: ".03", numOctaves: 2, seed: 4, result: "n" }, fr);
+  sv("feDisplacementMap", { in: "SourceGraphic", in2: "n", scale: 4, xChannelSelector: "R", yChannelSelector: "G" }, fr);
+  g = sv("g", { id: "d3H" }, D);
+  hammer(g, { handle: "#e8c37c", grip: "#c4955a", head: "#c3ced8", stroke: "#1f2d4d", sw: 3.2, hatch: true });
+  g = sv("g", { id: "d3F" }, D);
+  sv("path", { d: "M0 -6C34 -34 42 -100 6 -140C-36 -106 -40 -40 0 -6Z", fill: "#fffdf6", stroke: "#1f2d4d", "stroke-width": 3, "stroke-linejoin": "round" }, g);
+  sv("path", { d: "M6 -136C-26 -104 -30 -46 0 -10C-12 -50 -10 -100 6 -136Z", fill: "#bcd4ea", "fill-opacity": .7 }, g);
+  sv("path", { d: "M0 8C1 -40 3 -92 6 -140M1 -34L-20 -52M2 -60L-24 -80M3 -86L-20 -106M2 -44L22 -62M3 -70L26 -90M5 -96L20 -114", stroke: "#1f2d4d", "stroke-width": 2.4, fill: "none", "stroke-linecap": "round" }, g);
+  g = sv("g", { id: "d3Hg" }, D);
+  sv("path", { d: H_HANDLE + H_HEAD, fill: "none", stroke: "#8a93a6", "stroke-width": 2, "stroke-linejoin": "round" }, g);
+  g = sv("g", { id: "d3Fg" }, D);
+  sv("path", { d: "M0 -6C34 -34 42 -100 6 -140C-36 -106 -40 -40 0 -6Z", fill: "none", stroke: "#8a93a6", "stroke-width": 2 }, g);
+
+  // 4 · kit: flat vector with an ink outline (the talk's own drawing)
+  g = sv("g", { id: "d4H" }, D);
+  hammer(g, { handle: "#f2a516", grip: "#c97f00", head: "#d7e3ec", stroke: "#10212e", sw: 3, hl: "#fff" });
+  g = sv("g", { id: "d4F" }, D);
+  sv("path", { d: "M0 -6C34 -36 40 -104 0 -136C-40 -104 -34 -36 0 -6Z", fill: "#ffffff", stroke: "#10212e", "stroke-width": 3 }, g);
+  sv("path", { d: "M0 0V-136M0 -40L-20 -58M0 -64L-24 -84M0 -88L-20 -106M0 -48L22 -68M0 -74L24 -94M0 -98L18 -114", fill: "none", stroke: "#10212e", "stroke-width": 2.5, "stroke-linecap": "round" }, g);
+}
+buildSymbols();
+
+/* =====================================================================
+   1 · ONE CONTINUOUS SCENE
+   ===================================================================== */
+function d1Globe(g, defs, cx, cy, r, place, halo) {
+  const id = uid("d1g");
+  if (place === "earth") {
+    const k = r / (r + halo);
+    grad("radialGradient", { id: id + "h", gradientUnits: "userSpaceOnUse", cx, cy, r: r + halo },
+      [[0, "#5bc0eb", 0], [k - .001, "#5bc0eb", 0], [k, "#9adcff", .65], [k + (1 - k) * .22, "#3d9fd8", .25], [k + (1 - k) * .6, "#1d5f99", .07], [1, "#1d5f99", 0]], defs);
+    sv("circle", { cx, cy, r: r + halo, fill: `url(#${id}h)` }, g);
+  }
+  const st = place === "earth"
+    ? [[0, "#e3bf86"], [.025, "#b08550"], [.1, "#5e4226"], [.3, "#22170e"], [1, "#0b0705"]]
+    : [[0, "#dfe3e7"], [.025, "#a3abb3"], [.1, "#5a6169"], [.3, "#24282d"], [1, "#0a0c0e"]];
+  grad("radialGradient", { id: id + "d", gradientUnits: "userSpaceOnUse", cx, cy: cy - r, r }, st, defs);
+  sv("circle", { cx, cy, r, fill: `url(#${id}d)` }, g);
+  if (place === "moon") {
+    const rn = rng(Math.round(r) + 9);
+    for (let i = 0; i < 26; i++) {
+      const x = cx + (rn() - .5) * 2 * r * .5, dx = x - cx, sy = cy - Math.sqrt(r * r - dx * dx);
+      const rx = r * (.01 + rn() * .024), y = sy + rx * .5 + rn() * r * .06;
+      sv("ellipse", { cx: x.toFixed(1), cy: y.toFixed(1), rx: rx.toFixed(1), ry: (rx * .2).toFixed(1), fill: "#000", "fill-opacity": .3 }, g);
+    }
+  }
+  sv("circle", { cx, cy, r, fill: "none", stroke: place === "earth" ? "#ffe2b5" : "#ffffff", "stroke-opacity": place === "earth" ? .6 : .45, "stroke-width": Math.max(1.5, r / 600) }, g);
+}
+function d1Body(g, defs, x, y, r, kind) {
+  const id = uid("d1b");
+  if (kind === "earth") {
+    grad("radialGradient", { id, cx: .35, cy: .3, r: .8 }, [[0, "#7cc4f2"], [.6, "#2a72b8"], [1, "#123a66"]], defs);
+    sv("circle", { cx: x, cy: y, r: r * 1.35, fill: "#5bc0eb", "fill-opacity": .12 }, g);
+    sv("circle", { cx: x, cy: y, r, fill: `url(#${id})` }, g);
+    sv("path", { d: `M${x - r * .55} ${y - r * .3}q${r * .3} ${-r * .3} ${r * .55} ${-r * .05}t${r * .05} ${r * .45}q${-r * .25} ${r * .25} ${-r * .5} ${r * .1}zM${x + r * .2} ${y + r * .25}q${r * .3} ${-r * .1} ${r * .45} ${r * .2}`, fill: "#4fae6a", "fill-opacity": .85 }, g);
+  } else {
+    grad("radialGradient", { id, cx: .35, cy: .3, r: .8 }, [[0, "#eef1f4"], [.7, "#a7aeb6"], [1, "#6b727a"]], defs);
+    sv("circle", { cx: x, cy: y, r, fill: `url(#${id})` }, g);
+    [[-.3, -.2, .2], [.3, .15, .14], [-.05, .45, .11]].forEach(([a, b, c]) => sv("circle", { cx: x + a * r, cy: y + b * r, r: c * r, fill: "#8d949c", "fill-opacity": .6 }, g));
+  }
+}
+function buildD1() {
+  const el = h("section", { class: "dir d1", "data-place": "earth" });
+  el.innerHTML = `
+    <div class="layer l-bg"></div>
+    <div class="layer l-glow"><div class="g1"></div><div class="g2"></div><div class="beam"></div></div>
+    <div class="layer l-world">
+      <div class="ui ui1"><p class="q1"></p><div class="gw" style="left:480px"></div><div class="gw" style="left:830px"></div><div class="gw" style="left:1180px"></div><div class="ctl"></div></div>
+      <div class="ui ui2"><svg class="hud" viewBox="0 0 1920 1080" aria-hidden="true"></svg><h2 class="t2"></h2><div class="rc"></div><div class="mini"></div></div>
+    </div>
+    <div class="layer l-fg"></div>`;
+  const L = { bg: $(".l-bg", el), glow: $(".l-glow", el), world: $(".l-world", el), fg: $(".l-fg", el) };
+  // far stars
+  const st = sv("svg", { class: "stars", viewBox: "-500 -400 2920 1880", "aria-hidden": "true" }); L.bg.append(st);
+  const r = rng(3);
+  for (let i = 0; i < 320; i++) sv("circle", { cx: (-500 + r() * 2920).toFixed(1), cy: (-400 + r() * 1880).toFixed(1), r: (.5 + r() * 1.5).toFixed(2), fill: "#fff", opacity: (.2 + r() * .6).toFixed(2), class: i % 6 === 0 ? "tw" : null }, st);
+  // near bokeh
+  [[1700, 140, 90], [90, 760, 60], [1450, 1040, 120], [300, 120, 40], [1830, 700, 50], [980, 40, 30]].forEach(([x, y, d]) => L.fg.append(h("div", { class: "bk", style: `left:${x}px;top:${y}px;width:${d}px;height:${d}px` })));
+  // the world: one globe, the objects, the labels' lines
+  const W = sv("svg", { class: "scene", viewBox: "0 0 1920 1080", role: "img", "aria-label": "A hammer and a feather held above the ground" });
+  L.world.prepend(W);
+  const defs = sv("defs", null, W);
+  const LN = { hammer: 480, feather: 1180 }, TOP = 440, GY = 880, R = 1800, CX = 830, CY = GY + Math.sqrt(R * R - 350 * 350);
+  const eG = sv("g", { class: "earthOnly" }, W), mG = sv("g", { class: "moonOnly" }, W);
+  d1Globe(eG, defs, CX, CY, R, "earth", 300);
+  d1Globe(mG, defs, CX, CY, R, "moon", 0);
+  d1Body(sv("g", { class: "sky1" }, eG), defs, 1668, 300, 26, "moon");
+  d1Body(sv("g", { class: "sky1" }, mG), defs, 1668, 300, 34, "earth");
+  const motes = sv("g", { class: "motes", fill: "#cfeaff" }, eG);
+  for (let i = 0; i < 90; i++) sv("circle", { cx: (220 + r() * 1260).toFixed(1), cy: (230 + r() * 610).toFixed(1), r: (1.6 + r() * 2.2).toFixed(1), "fill-opacity": (.14 + r() * .24).toFixed(2) }, motes);
+  // leader lines from each guess to the thing it names
+  const lg = sv("g", { class: "leads" }, W);
+  const ln = { h: sv("path", { class: "lead lg0" }, lg), f: sv("path", { class: "lead lg1" }, lg), bh: sv("path", { class: "lead lg2" }, lg), bf: sv("path", { class: "lead lg2" }, lg) };
+  const dots = { h: sv("circle", { r: 6, class: "ldot lg0" }, lg), f: sv("circle", { r: 6, class: "ldot lg1" }, lg) };
+  [[LN.hammer, "lg0"], [830, "lg2"], [LN.feather, "lg1"]].forEach(([x, c]) => sv("circle", { cx: x, cy: 944, r: 5, class: "ldot " + c }, lg));
+  const act = Actors(W, { sym: { hammer: "d1H", feather: "d1F" }, lanes: LN, top: TOP, ground: GY, pxm: (GY - TOP) / P.h, sc: 1.25, dt: .1, ghostOp: .1, ghostFade: true, objAttrs: { filter: "url(#glow1)" } });
+  const render = (p, t) => {
+    const q = act.render(p, t);
+    const hb = [q.hammer.x, q.hammer.y + 4], fb = [q.feather.x, q.feather.y - 4];
+    ln.h.setAttribute("d", `M${LN.hammer} 944L${hb[0].toFixed(1)} ${hb[1].toFixed(1)}`);
+    ln.f.setAttribute("d", `M${LN.feather} 944L${fb[0].toFixed(1)} ${fb[1].toFixed(1)}`);
+    ln.bh.setAttribute("d", `M830 944L${hb[0].toFixed(1)} ${hb[1].toFixed(1)}`);
+    ln.bf.setAttribute("d", `M830 944L${fb[0].toFixed(1)} ${fb[1].toFixed(1)}`);
+    dots.h.setAttribute("cx", hb[0].toFixed(1)); dots.h.setAttribute("cy", hb[1].toFixed(1));
+    dots.f.setAttribute("cx", fb[0].toFixed(1)); dots.f.setAttribute("cy", fb[1].toFixed(1));
+  };
+  const drop = Dropper(render);
+  // screen 1 UI
+  const ui1 = $(".ui1", el), ui2 = $(".ui2", el);
+  $(".q1", el).textContent = TXT.q;
+  const gs = guesses("gs");
+  gs.addEventListener("guess", () => { el.dataset.guess = gs.dataset.guess; });
+  $$(".gw", el).forEach((w, i) => w.append(gs.buttons[[0, 2, 1][i]]));
+  $(".ctl", el).append(placeSwitch("sw", p => { el.dataset.place = p; drop.setPlace(p); }), dropBtn("drop", () => drop.drop()));
+  // screen 2 UI (authored in screen coordinates; the camera puts it in place)
+  $(".t2", el).textContent = TXT.title;
+  const hud = $(".hud", el);
+  const tick = (x0, y0, x1, y1, c = 26, cls) => sv("path", { d: `M${x0} ${y0 + c}V${y0}H${x0 + c}M${x1 - c} ${y0}H${x1}V${y0 + c}M${x1} ${y1 - c}V${y1}H${x1 - c}M${x0 + c} ${y1}H${x0}V${y1 - c}`, class: cls || null }, hud);
+  tick(28, 432, 474, 790);
+  sv("path", { d: "M474 611H506V700H540" }, hud);
+  tick(1512, 584, 1868, 1010, 26, "tomini");
+  sv("path", { d: "M1480 800H1512", class: "tomini" }, hud);
+  const mini = d1Mini();
+  const A = ask("d1", () => { $(".mini", el).classList.add("on"); hud.classList.add("sent"); mini.loop.start(); });
+  ui2.insertBefore(A.qa, $(".rc", el));
+  $(".rc", el).append(A.req, A.rb);
+  $(".mini", el).append(mini.svg);
+  // camera
+  const CAM2 = { tx: -123.5, ty: 343, s: .45 };
+  const PAR = [[L.bg, .12], [L.glow, .4], [L.world, 1], [L.fg, 1.4]];
+  function cam(n) {
+    PAR.forEach(([layer, f]) => {
+      const tx = n === 2 ? CAM2.tx * f : 0, ty = n === 2 ? CAM2.ty * f : 0, s = n === 2 ? 1 + (CAM2.s - 1) * f : 1;
+      layer.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) scale(${s.toFixed(4)})`;
+    });
+  }
+  cam(1);
+  return {
+    el,
+    setScreen(n) { el.classList.toggle("at2", n === 2); cam(n); ui1.inert = n !== 1; ui2.inert = n !== 2; if (n === 2) mini.loop.resume(); else mini.loop.pause(); },
+    hide() { mini.loop.pause(); }
+  };
+}
+function d1Mini() {
+  const s = sv("svg", { class: "msim", viewBox: "0 0 340 410", role: "img", "aria-label": "A small hammer and feather dropping on Earth and on the Moon" });
+  const defs = sv("defs", null, s);
+  const acts = [["earth", 0], ["moon", 170]].map(([pl, x0]) => {
+    const cid = uid("d1c");
+    sv("rect", { x: x0, y: 0, width: 170, height: 410 }, sv("clipPath", { id: cid }, defs));
+    const g = sv("g", { "clip-path": `url(#${cid})` }, s);
+    const r = 150, cx = x0 + 85, gy = 340, cy = gy + Math.sqrt(r * r - 36 * 36);
+    d1Globe(g, defs, cx, cy, r, pl, 46);
+    if (pl === "moon") d1Body(g, defs, x0 + 132, 52, 12, "earth"); else d1Body(g, defs, x0 + 132, 52, 9, "moon");
+    return Actors(g, { sym: { hammer: "d1H", feather: "d1F" }, lanes: { hammer: cx - 36, feather: cx + 36 }, top: 130, ground: gy, pxm: (gy - 130) / P.h, sc: .42, dt: .1, ghostOp: .14, ghostFade: true, objAttrs: { filter: "url(#glow1)" } });
+  });
+  sv("path", { d: "M170 40V370", stroke: "#fff", "stroke-opacity": .14, "stroke-width": 1.5 }, s);
+  return { svg: s, loop: MiniLoop(t => { acts[0].render("earth", t); acts[1].render("moon", t); }) };
+}
+
+/* =====================================================================
+   2 · NIGHT LAB
+   ===================================================================== */
+function d2Room(g, defs, x, y, w, hgt, floorY, cx, place, scale = 1, seed = 5) {
+  const id = uid("d2r"), r = rng(seed);
+  if (place === "earth") {
+    grad("radialGradient", { id: id + "b", gradientUnits: "userSpaceOnUse", cx, cy: y + hgt * .35, r: Math.max(w, hgt) * .95 }, [[0, "#1d6890"], [.45, "#0b3d5c"], [1, "#062337"]], defs);
+    grad("linearGradient", { id: id + "f", x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#0d3a57"], [1, "#051a29"]], defs);
+  } else {
+    grad("radialGradient", { id: id + "b", gradientUnits: "userSpaceOnUse", cx, cy: y + hgt * .35, r: Math.max(w, hgt) * .95 }, [[0, "#16283a"], [.5, "#07111c"], [1, "#020509"]], defs);
+    grad("linearGradient", { id: id + "f", x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#38424d"], [1, "#0d1115"]], defs);
+  }
+  sv("rect", { x, y, width: w, height: hgt, fill: `url(#${id}b)` }, g);
+  if (place === "moon") { const sg = sv("g", { fill: "#fff" }, g); for (let i = 0; i < 110 * scale * scale + 14; i++) sv("circle", { cx: (x + r() * w).toFixed(1), cy: (y + r() * (floorY - y - 20)).toFixed(1), r: ((.6 + r() * 1.3) * Math.max(.6, scale)).toFixed(2), opacity: (.25 + r() * .6).toFixed(2) }, sg); }
+  grad("linearGradient", { id: id + "c", x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, place === "earth" ? "#fff6e0" : "#e3ecff", place === "earth" ? .2 : .16], [1, "#ffffff", .03]], defs);
+  const top = 90 * scale, bot = 470 * scale;
+  sv("path", { d: `M${cx - top} ${y - 40 * scale}H${cx + top}L${cx + bot} ${floorY}H${cx - bot}Z`, fill: `url(#${id}c)`, filter: scale > .6 ? "url(#soft40)" : "url(#soft)" }, g);
+  sv("rect", { x, y: floorY, width: w, height: y + hgt - floorY, fill: `url(#${id}f)` }, g);
+  if (place === "moon") [[-.7, 40, 70], [.55, 60, 50], [-.15, 120, 90], [.9, 150, 60]].forEach(([a, dy, rx]) => sv("ellipse", { cx: cx + a * 500 * scale, cy: floorY + dy * scale, rx: rx * scale, ry: rx * scale * .16, fill: "#000", "fill-opacity": .32 }, g));
+  grad("radialGradient", { id: id + "p", cx: .5, cy: .5, r: .5 }, [[0, "#ffffff", place === "earth" ? .26 : .22], [1, "#ffffff", 0]], defs);
+  sv("ellipse", { cx, cy: floorY + 4 * scale, rx: 540 * scale, ry: 80 * scale, fill: `url(#${id}p)` }, g);
+  sv("path", { d: `M${x} ${floorY}H${x + w}`, stroke: "#fff", "stroke-opacity": .14, "stroke-width": 1.5 }, g);
+}
+function buildD2() {
+  const el = h("section", { class: "dir d2", "data-place": "earth" });
+  el.innerHTML = `
+    <div class="scr s1 cur"><p class="q1"></p></div>
+    <div class="scr s2"><div class="s2bg"></div><h2 class="t2"></h2><div class="mini"></div></div>`;
+  const s1 = $(".s1", el), s2 = $(".s2", el);
+  const W = sv("svg", { class: "scene", viewBox: "0 0 1920 1080", role: "img", "aria-label": "A hammer and a feather held under a soft light" }); s1.prepend(W);
+  const defs = sv("defs", null, W);
+  const LN = { hammer: 1180, feather: 1560 }, TOP = 352, GY = 880;
+  const eG = sv("g", { class: "earthOnly" }, W), mG = sv("g", { class: "moonOnly" }, W);
+  d2Room(eG, defs, 0, 0, 1920, 1080, GY, 1370, "earth", 1);
+  d2Room(mG, defs, 0, 0, 1920, 1080, GY, 1370, "moon", 1);
+  // vignette
+  grad("radialGradient", { id: "d2vig", cx: .6, cy: .45, r: .75 }, [[.55, "#000", 0], [1, "#000", .45]], defs);
+  const r = rng(8);
+  const motes = sv("g", { class: "motes", fill: "#fff" }, eG);
+  for (let i = 0; i < 70; i++) { const yy = 120 + r() * 740, spread = 90 + (yy / 880) * 380; sv("circle", { cx: (1370 + (r() - .5) * 2 * spread).toFixed(1), cy: yy.toFixed(1), r: (1.2 + r() * 2).toFixed(1), "fill-opacity": (.12 + r() * .25).toFixed(2) }, motes); }
+  const act = Actors(W, { sym: { hammer: "d2H", feather: "d2F" }, lanes: LN, top: TOP, ground: GY, pxm: (GY - TOP) / P.h, sc: 1.35, dt: .05, ghostOp: .075, ghostFade: true,
+    objAttrs: { filter: "url(#glow2)" }, shadow: { rx: 70, ry: 12, fill: "#000", op: .55, dy: 6, filter: "url(#soft)" } });
+  sv("rect", { width: 1920, height: 1080, fill: "url(#d2vig)", "pointer-events": "none" }, W);
+  const drop = Dropper((p, t) => act.render(p, t));
+  $(".q1", el).textContent = TXT.q;
+  s1.append(guesses("opts"));
+  s1.append(h("div", { class: "ctl" }, placeSwitch("sw", p => { el.dataset.place = p; drop.setPlace(p); }), dropBtn("drop", () => drop.drop())));
+  // screen 2
+  $(".t2", el).textContent = TXT.title;
+  const mini = d2Mini();
+  const A = ask("d2", () => { $(".mini", el).classList.add("on"); mini.loop.start(); });
+  s2.insertBefore(A.qa, $(".mini", el)); s2.insertBefore(A.req, $(".mini", el)); s2.insertBefore(A.rb, $(".mini", el));
+  $(".mini", el).append(mini.svg);
+  return {
+    el,
+    setScreen(n) { s1.classList.toggle("cur", n === 1); s2.classList.toggle("cur", n === 2); s1.inert = n !== 1; s2.inert = n !== 2; if (n === 2) mini.loop.resume(); else mini.loop.pause(); },
+    hide() { mini.loop.pause(); }
+  };
+}
+function d2Mini() {
+  const s = sv("svg", { class: "msim", viewBox: "0 0 520 390", role: "img", "aria-label": "A small hammer and feather dropping on Earth and on the Moon" });
+  const defs = sv("defs", null, s);
+  const acts = [["earth", 0], ["moon", 266]].map(([pl, x0], i) => {
+    const cid = uid("d2c"), w = 254, gy = 322, cx = x0 + w / 2;
+    sv("rect", { x: x0, y: 0, width: w, height: 390, rx: 26 }, sv("clipPath", { id: cid }, defs));
+    const g = sv("g", { "clip-path": `url(#${cid})` }, s);
+    d2Room(g, defs, x0, 0, w, 390, gy, cx, pl, .3, 21 + i);
+    const mk = uid("d2m");
+    grad("radialGradient", { id: mk, cx: .5, cy: .45, r: .7 }, [[.6, "#000", 0], [1, "#000", .35]], defs);
+    const a = Actors(g, { sym: { hammer: "d2H", feather: "d2F" }, lanes: { hammer: cx - 46, feather: cx + 46 }, top: 128, ground: gy, pxm: (gy - 128) / P.h, sc: .5, dt: .05, ghostOp: .12, ghostFade: true,
+      objAttrs: { filter: "url(#glow2)" }, shadow: { rx: 26, ry: 5, fill: "#000", op: .5, dy: 3 } });
+    sv("rect", { x: x0, y: 0, width: w, height: 390, fill: `url(#${mk})` }, g);
+    return a;
+  });
+  return { svg: s, loop: MiniLoop(t => { acts[0].render("earth", t); acts[1].render("moon", t); }) };
+}
+
+/* =====================================================================
+   3 · TEACHER'S NOTEBOOK
+   ===================================================================== */
+function wobble(x0, x1, y, rn, amp = 2.4, step = 40) {
+  let d = `M${x0} ${(y + (rn() - .5) * amp).toFixed(1)}`;
+  for (let x = x0 + step; x <= x1 + .1; x += step) d += ` Q${(x - step / 2).toFixed(1)} ${(y + (rn() - .5) * amp * 2).toFixed(1)} ${x.toFixed(1)} ${(y + (rn() - .5) * amp).toFixed(1)}`;
+  return d;
+}
+function d3Sketch(g, x0, x1, gy, place, sc, rn, sky) {
+  const ink = { class: "ink" };
+  sv("path", Object.assign({ d: wobble(x0, x1, gy, rn, 2.6 * sc, 44 * sc), "stroke-width": 3.4 * Math.max(.6, sc) }, ink), g);
+  let hd = "";
+  for (let x = x0 + 14 * sc; x < x1 - 6; x += 24 * sc) { const y = gy + (8 + rn() * 3) * sc; hd += `M${x.toFixed(1)} ${y.toFixed(1)}l${(-16 * sc).toFixed(1)} ${(18 * sc).toFixed(1)}`; }
+  sv("path", { d: hd, class: "ink", "stroke-width": 2 * Math.max(.6, sc), "stroke-opacity": .42 }, g);
+  if (place === "earth") {
+    const cloud = (x, y, s) => sv("path", { d: `M${x} ${y}c${-24 * s} 0 ${-26 * s} ${-30 * s} ${-2 * s} ${-32 * s}c${4 * s} ${-26 * s} ${44 * s} ${-30 * s} ${54 * s} ${-8 * s}c${18 * s} ${-12 * s} ${44 * s} ${2 * s} ${38 * s} ${22 * s}c${20 * s} ${4 * s} ${18 * s} ${20 * s} ${-2 * s} ${18 * s}Z`, class: "ink", fill: "#ffffff", "fill-opacity": .55, "stroke-width": 2.6 * Math.max(.6, sc) }, g);
+    cloud(sky.c1[0], sky.c1[1], 1.1 * sc); cloud(sky.c2[0], sky.c2[1], .8 * sc);
+    let wd = "";
+    sky.wind.forEach(([x, y]) => { wd += `M${x} ${y}q${10 * sc} ${-12 * sc} ${20 * sc} 0t${20 * sc} 0t${20 * sc} 0`; });
+    sv("path", { d: wd, class: "ink", "stroke-width": 2.2 * Math.max(.6, sc), "stroke-opacity": .45 }, g);
+    const [sx, sy] = sky.sun, sr = 26 * sc;
+    sv("circle", { cx: sx, cy: sy, r: sr, class: "ink", fill: "#ffd76a", "fill-opacity": .65, "stroke-width": 2.6 * Math.max(.6, sc) }, g);
+    let rd = ""; for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 2 + .2; rd += `M${(sx + Math.cos(a) * sr * 1.45).toFixed(1)} ${(sy + Math.sin(a) * sr * 1.45).toFixed(1)}L${(sx + Math.cos(a) * sr * 1.95).toFixed(1)} ${(sy + Math.sin(a) * sr * 1.95).toFixed(1)}`; }
+    sv("path", { d: rd, class: "ink", "stroke-width": 2.4 * Math.max(.6, sc) }, g);
+  } else {
+    sky.craters.forEach(([x, rx]) => sv("ellipse", { cx: x, cy: gy + 16 * sc, rx: rx * sc, ry: rx * sc * .28, class: "ink", fill: "#cfd5dc", "fill-opacity": .5, "stroke-width": 2.4 * Math.max(.6, sc) }, g));
+    let sd = ""; sky.stars.forEach(([x, y]) => { const s = 9 * sc; sd += `M${x - s} ${y}H${x + s}M${x} ${y - s}V${y + s}M${x - s * .6} ${y - s * .6}L${x + s * .6} ${y + s * .6}M${x - s * .6} ${y + s * .6}L${x + s * .6} ${y - s * .6}`; });
+    sv("path", { d: sd, class: "ink", "stroke-width": 2 * Math.max(.6, sc), "stroke-opacity": .7 }, g);
+    const [ex, ey] = sky.sun, er = 34 * sc;
+    sv("circle", { cx: ex, cy: ey, r: er, class: "ink", fill: "#bcd8ef", "fill-opacity": .8, "stroke-width": 2.6 * Math.max(.6, sc) }, g);
+    sv("path", { d: `M${ex - er * .6} ${ey - er * .2}c${er * .3} ${-er * .5} ${er * .6} ${-er * .2} ${er * .5} ${er * .2}s${-er * .3} ${er * .5} ${-er * .55} ${er * .2}zM${ex + er * .1} ${ey + er * .35}c${er * .25} ${-er * .2} ${er * .5} 0 ${er * .4} ${er * .25}`, class: "ink", fill: "#a8cf9a", "fill-opacity": .8, "stroke-width": 2 * Math.max(.6, sc) }, g);
+  }
+}
+/* a pen circle drawn round the chosen word, sized to the button it sits in */
+const CIRC = [[10, 56], [4, 26, 36, 6, 62, 8], [88, 10, 99, 34, 95, 58], [91, 84, 60, 96, 34, 92], [12, 88, 2, 70, 8, 46], [11, 34, 20, 24, 34, 18]];
+const circRO = new ResizeObserver(es => es.forEach(e => {
+  const b = e.target, s = b.querySelector(".circ"), w = b.offsetWidth + 28, hh = b.offsetHeight + 24;
+  if (!w || !hh) return;
+  s.setAttribute("viewBox", `0 0 ${w} ${hh}`);
+  const P = (a, i) => (i % 2 ? a * hh : a * w) / 100;
+  s.firstChild.setAttribute("d", CIRC.map((seg, k) => (k ? "C" : "M") + seg.map((v, i) => P(v, i).toFixed(1)).join(" ")).join(""));
+}));
+function circleSvg(b) {
+  const s = sv("svg", { class: "circ", "aria-hidden": "true" });
+  sv("path", { pathLength: 1 }, s);
+  b.prepend(s); circRO.observe(b);
+}
+function buildD3() {
+  const el = h("section", { class: "dir d3", "data-place": "earth" });
+  const grain = `<svg class="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><filter id="pgrain"><feTurbulence type="fractalNoise" baseFrequency=".004 .007" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .28  0 0 -.9 .5 0"/></filter><rect width="1920" height="1080" filter="url(#pgrain)"/></svg>`;
+  el.innerHTML = `<div class="page p2">${grain}<h2 class="t2"></h2><div class="card"><div class="tape"></div></div><div class="mini"><div class="note"></div></div></div>
+                  <div class="page p1">${grain.replace('id="pgrain"', 'id="pgrain1"').replace("url(#pgrain)", "url(#pgrain1)")}<p class="q1"></p></div>`;
+  const p1 = $(".p1", el), p2 = $(".p2", el);
+  [p1, p2].forEach(p => {
+    const rs = sv("svg", { class: "rings", viewBox: "0 0 1920 48", "aria-hidden": "true" });
+    for (let x = 150; x < 1800; x += 72) { sv("circle", { cx: x, cy: 26, r: 8, fill: "#d8ceb6" }, rs); sv("path", { d: `M${x - 4} 30C${x - 6} 10 ${x - 2} -6 ${x + 6} -4`, fill: "none", stroke: "#6d717a", "stroke-width": 5, "stroke-linecap": "round" }, rs); }
+    p.append(rs);
+  });
+  const W = sv("svg", { class: "scene", viewBox: "0 0 1920 1080", role: "img", "aria-label": "A drawing of a hammer and a feather held above the ground" });
+  p1.insertBefore(W, $(".q1", p1));
+  const LN = { hammer: 540, feather: 960 }, TOP = 456, GY = 904;
+  const rough = sv("g", { filter: "url(#rough)" }, W);
+  const eG = sv("g", { class: "earthOnly" }, rough), mG = sv("g", { class: "moonOnly" }, rough);
+  d3Sketch(eG, 260, 1220, GY, "earth", 1, rng(2), { c1: [380, 330], c2: [1090, 300], wind: [[300, 560], [1040, 640], [700, 410]], sun: [1150, 410] });
+  d3Sketch(mG, 260, 1220, GY, "moon", 1, rng(2), { craters: [[380, 46], [760, 64], [1110, 40]], stars: [[330, 330], [700, 300], [1090, 520], [420, 600], [1160, 330]], sun: [1110, 400] });
+  sv("path", { d: `M410 ${TOP + 14}H1090`, class: "ink", "stroke-width": 2, "stroke-dasharray": "3 13", "stroke-opacity": .6 }, rough);
+  const act = Actors(rough, { sym: { hammer: "d3H", feather: "d3F" }, ghostSym: { hammer: "d3Hg", feather: "d3Fg" }, lanes: LN, top: TOP, ground: GY, pxm: (GY - TOP) / P.h, sc: 1.3, dt: .2, ghostOp: .5 });
+  const drop = Dropper((p, t) => act.render(p, t));
+  $(".q1", el).textContent = TXT.q;
+  p1.append(guesses("opts", circleSvg));
+  p1.append(placeSwitch("sw", p => { el.dataset.place = p; drop.setPlace(p); }, circleSvg));
+  p1.append(dropBtn("drop", () => drop.drop()));
+  // screen 2
+  $(".t2", el).textContent = TXT.title;
+  const mini = d3Mini();
+  const A = ask("d3", () => { $(".mini", el).classList.add("on"); mini.loop.start(); });
+  p2.insertBefore(A.qa, $(".card", el));
+  $(".card", el).append(A.req);
+  p2.insertBefore(A.rb, $(".mini", el));
+  $(".mini", el).append(mini.svg);
+  return {
+    el,
+    setScreen(n) { el.classList.toggle("at2", n === 2); p1.inert = n !== 1; p2.inert = n !== 2; if (n === 2) mini.loop.resume(); else mini.loop.pause(); },
+    hide() { mini.loop.pause(); }
+  };
+}
+function d3Mini() {
+  const s = sv("svg", { class: "msim", viewBox: "0 0 400 300", role: "img", "aria-label": "A small drawing of a hammer and feather dropping on Earth and on the Moon" });
+  const rough = sv("g", { filter: "url(#rough)" }, s);
+  sv("path", { d: wobble(200, 200.1, 30, rng(4)) + "M200 34C198 120 202 200 199 272", class: "ink", "stroke-width": 2, "stroke-opacity": .55 }, rough);
+  const gy = 246, top = 104;
+  const a1g = sv("g", null, rough), a2g = sv("g", null, rough);
+  d3Sketch(a1g, 18, 184, gy, "earth", .42, rng(5), { c1: [50, 66], c2: [150, 56], wind: [[40, 150], [130, 190]], sun: [160, 100] });
+  d3Sketch(a2g, 216, 382, gy, "moon", .42, rng(6), { craters: [[250, 40], [340, 50]], stars: [[236, 60], [300, 44], [372, 150]], sun: [350, 88] });
+  const mk = (g, x0) => Actors(g, { sym: { hammer: "d3H", feather: "d3F" }, ghostSym: { hammer: "d3Hg", feather: "d3Fg" }, lanes: { hammer: x0 + 56, feather: x0 + 126 }, top, ground: gy, pxm: (gy - top) / P.h, sc: .5, dt: .2, ghostOp: .5 });
+  const a1 = mk(a1g, 18), a2 = mk(a2g, 216);
+  return { svg: s, loop: MiniLoop(t => { a1.render("earth", t); a2.render("moon", t); }) };
+}
+
+/* =====================================================================
+   4 · THE KIT'S LOOK, POLISHED
+   ===================================================================== */
+function d4Panel(g, defs, x, y, w, hgt, gy, place, rr, seed, sc = 1) {
+  const id = uid("d4p"), r = rng(seed);
+  sv("rect", { x, y, width: w, height: hgt, rx: rr }, sv("clipPath", { id: id + "k" }, defs));
+  const c = sv("g", { "clip-path": `url(#${id}k)` }, g);
+  if (place === "earth") {
+    grad("linearGradient", { id: id + "s", x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#164a70"], [1, "#3a86b8"]], defs);
+    sv("rect", { x, y, width: w, height: gy - y, fill: `url(#${id}s)` }, c);
+    const ag = sv("g", { fill: "#fff", "fill-opacity": .26 }, c);
+    for (let i = 0; i < 100 * sc * sc + 12; i++) sv("circle", { cx: (x + r() * w).toFixed(1), cy: (y + r() * (gy - y - 8)).toFixed(1), r: ((2.6 + r() * 2) * Math.max(.5, sc)).toFixed(1) }, ag);
+    sv("rect", { x, y: gy, width: w, height: y + hgt - gy, fill: "#c9a46a" }, c);
+    sv("path", { d: `M${x} ${gy + 26 * sc}Q${x + w * .3} ${gy + 14 * sc} ${x + w * .55} ${gy + 30 * sc}T${x + w} ${gy + 22 * sc}V${y + hgt}H${x}Z`, fill: "#b8915a", "fill-opacity": .6 }, c);
+  } else {
+    sv("rect", { x, y, width: w, height: gy - y, fill: "#04070b" }, c);
+    const sg = sv("g", { fill: "#fff" }, c);
+    for (let i = 0; i < 70 * sc * sc + 10; i++) sv("circle", { cx: (x + r() * w).toFixed(1), cy: (y + r() * (gy - y - 30)).toFixed(1), r: ((1 + r() * 1.3) * Math.max(.6, sc)).toFixed(1), opacity: (.5 + r() * .5).toFixed(2) }, sg);
+    const ex = x + w - 110 * sc, ey = y + 100 * sc, er = 38 * sc;
+    sv("circle", { cx: ex, cy: ey, r: er, fill: "#2f7fc1" }, c);
+    sv("path", { d: `M${ex - er * .45} ${ey - er * .45}q${er * .37} ${-er * .2} ${er * .58} ${er * .1}t${-er * .16} ${er * .58}q${-er * .37} ${er * .05} ${-er * .47} ${-er * .26}z`, fill: "#3ba55c" }, c);
+    sv("rect", { x, y: gy, width: w, height: y + hgt - gy, fill: "#8d939a" }, c);
+    [[.14, 20, 56], [.42, 46, 38], [.7, 24, 64], [.92, 50, 34]].forEach(([a, dy, rx]) => sv("ellipse", { cx: x + a * w, cy: gy + dy * sc, rx: rx * sc, ry: rx * sc * .28, fill: "rgba(16,33,46,.22)" }, c));
+  }
+  sv("path", { d: `M${x} ${gy}H${x + w}`, stroke: "#10212e", "stroke-width": 4 * Math.max(.6, sc) }, c);
+}
+function buildD4() {
+  const el = h("section", { class: "dir d4", "data-place": "earth" });
+  el.innerHTML = `
+    <div class="scr s1 cur"><div class="hero"><p class="q1"></p></div><div class="simcard"></div><div class="side"></div></div>
+    <div class="scr s2"><div class="hero"><h2 class="t2"></h2></div><div class="rc"></div><div class="mini"></div></div>`;
+  const s1 = $(".s1", el), s2 = $(".s2", el);
+  const W = sv("svg", { class: "scene", viewBox: "0 0 1088 694", role: "img", "aria-label": "A hammer and a feather held above the ground" });
+  $(".simcard", el).append(W);
+  const defs = sv("defs", null, W);
+  const LN = { hammer: 364, feather: 724 }, TOP = 226, GY = 600;
+  const eG = sv("g", { class: "earthOnly" }, W), mG = sv("g", { class: "moonOnly" }, W);
+  d4Panel(eG, defs, 0, 0, 1088, 694, GY, "earth", 18, 7);
+  d4Panel(mG, defs, 0, 0, 1088, 694, GY, "moon", 18, 7);
+  sv("path", { d: `M180 ${TOP + 6}H908`, stroke: "#fff", "stroke-opacity": .5, "stroke-width": 3, "stroke-dasharray": "6 14" }, W);
+  const act = Actors(W, { sym: { hammer: "d4H", feather: "d4F" }, lanes: LN, top: TOP, ground: GY, pxm: (GY - TOP) / P.h, sc: 1.3, dt: .2, ghostOp: .22 });
+  const drop = Dropper((p, t) => act.render(p, t));
+  $(".q1", el).textContent = TXT.q;
+  $(".side", el).append(guesses("opts"), placeSwitch("sw", p => { el.dataset.place = p; drop.setPlace(p); }), dropBtn("drop", () => drop.drop()));
+  // screen 2
+  $(".t2", el).textContent = TXT.title;
+  const mini = d4Mini();
+  const A = ask("d4", () => { $(".mini", el).classList.add("on"); mini.loop.start(); }, { icons: true });
+  s2.insertBefore(A.qa, $(".rc", el));
+  $(".rc", el).append(A.req, A.rb);
+  $(".mini", el).append(mini.svg);
+  return {
+    el,
+    setScreen(n) { s1.classList.toggle("cur", n === 1); s2.classList.toggle("cur", n === 2); s1.inert = n !== 1; s2.inert = n !== 2; if (n === 2) mini.loop.resume(); else mini.loop.pause(); },
+    hide() { mini.loop.pause(); }
+  };
+}
+function d4Mini() {
+  const s = sv("svg", { class: "msim", viewBox: "0 0 462 342", role: "img", "aria-label": "A small hammer and feather dropping on Earth and on the Moon" });
+  const defs = sv("defs", null, s);
+  const acts = [["earth", 0], ["moon", 239]].map(([pl, x0], i) => {
+    const g = sv("g", null, s), w = 223, gy = 286;
+    d4Panel(g, defs, x0, 0, w, 342, gy, pl, 12, 30 + i, .42);
+    return Actors(g, { sym: { hammer: "d4H", feather: "d4F" }, lanes: { hammer: x0 + 72, feather: x0 + 152 }, top: 120, ground: gy, pxm: (gy - 112) / P.h, sc: .5, dt: .2, ghostOp: .22 });
+  });
+  return { svg: s, loop: MiniLoop(t => { acts[0].render("earth", t); acts[1].render("moon", t); }) };
+}
+
+/* ---------- deck: directions, screens, switcher, keys, scaling ---------- */
+const stage = $("#stage");
+const DIRS = [buildD1(), buildD2(), buildD3(), buildD4()];
+DIRS.forEach(d => stage.append(d.el));
+const NAMES = ["1 Space scene", "2 Dark stage", "3 Notebook page", "4 Simple cards"];   // the names used on slide 12 of the talk
+const dirBtns = NAMES.map((n, i) => { const b = h("button", { type: "button", "aria-pressed": "false" }, n); b.addEventListener("click", () => show(i + 1, scr, true)); $("#dirBtns").append(b); return b; });
+const scrBtns = ["Screen 1", "Screen 2"].map((n, i) => { const b = h("button", { type: "button", "aria-pressed": "false" }, n); b.addEventListener("click", () => show(dir, i + 1)); $("#scrBtns").append(b); return b; });
+let dir = 0, scr = 1;
+function show(d, s, instant) {
+  const changed = d !== dir;
+  const ae = document.activeElement;
+  if (ae && stage.contains(ae) && ae.blur) ae.blur();
+  if (changed) {
+    DIRS.forEach((x, i) => { const on = i === d - 1; if (!on) x.hide(); x.el.classList.toggle("on", on); x.el.inert = !on; });
+  }
+  const D = DIRS[d - 1];
+  if (changed || instant) D.el.classList.add("instant");
+  D.setScreen(s);
+  if (changed || instant) { void D.el.offsetWidth; requestAnimationFrame(() => D.el.classList.remove("instant")); }
+  dir = d; scr = s;
+  dirBtns.forEach((b, i) => b.setAttribute("aria-pressed", String(i === d - 1)));
+  scrBtns.forEach((b, i) => b.setAttribute("aria-pressed", String(i === s - 1)));
+  try { history.replaceState(null, "", `#${d}-${s}`); } catch (e) { /* file:// */ }
+}
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const t = e.target;
+  if (t instanceof Element && (t.isContentEditable || t.matches("input,textarea"))) { if (e.key === "Escape") t.blur(); return; }
+  if (/^[1-4]$/.test(e.key)) { e.preventDefault(); show(+e.key, scr, true); }
+  else if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); if (scr !== 2) show(dir, 2); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); if (scr !== 1) show(dir, 1); }
+});
+function fit() {
+  const vp = $("#viewport"), w = vp.clientWidth, hh = vp.clientHeight, s = Math.min(w / 1920, hh / 1080);
+  stage.style.transform = `translate(${((w - 1920 * s) / 2).toFixed(2)}px,${((hh - 1080 * s) / 2).toFixed(2)}px) scale(${s})`;
+}
+addEventListener("resize", fit); fit();
+const m = /^#([1-4])-([12])$/.exec(location.hash);
+show(m ? +m[1] : 1, m ? +m[2] : 1, true);
+</script>
+</body>
+</html>
